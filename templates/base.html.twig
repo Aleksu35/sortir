@@ -14,28 +14,48 @@
     </head>
     <body>
     <header>
-    <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid">
-            <h1> <a class="navbar-brand" href="#">Logo Sortir.com</a></h1>
-            <ul class="nav">
-            <li class="text-decoration-none nav-item"> <a class="navbar-brand" href="#">Villes</a></li>
-            <li> <a class="navbar-brand  text-decoration-none  nav-item" href="#">Campus</a></li>
-            <li> <a class="navbar-brand text-decoration-none nav-item" href="#">Accueil</a></li>
-            <li> <a class="navbar-brand text-decoration-none nav-item" href="#">Mon profil</a></li>
-            {% if app.user %}
-                <li class="nav-item">
-                    <a class="nav-link text-decoration-none nav-item" href="{{ path('app_logout')}}" title="Se déconnecter">Se déconnecter </a>
-                </li>
-            {% else %}
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <!-- Navbar Brand/Logo -->
+                <a class="navbar-brand h1" href="#">Logo Sortir.com</a>
 
-                <li class="nav-item">
-                    <a class="nav-link text-decoration-none nav-item" href="{{ path('app_login')}}" title="Se connecter">Se connecter</a>
-                </li>
-            {% endif %}
-            </ul>
-        </div>
-    </nav>
+                <!-- Toggler for Mobile -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navbar Links -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-decoration-none" href="#">Villes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-decoration-none" href="#">Campus</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-decoration-none" href="#">Accueil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-decoration-none" href="#">Mon profil</a>
+                        </li>
+                        {% if app.user %}
+                            <li class="nav-item">
+                                <a class="nav-link text-decoration-none" href="{{ path('app_logout') }}" title="Se déconnecter">
+                                    Se déconnecter <p>&#128588;</p>{{ app.user.pseudo}}
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link text-decoration-none" href="{{ path('app_login') }}" title="Se connecter">Se connecter</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </header>
+
     {% block body %} {% endblock %}
     </body>
 </html>
