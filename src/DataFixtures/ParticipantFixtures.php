@@ -23,6 +23,7 @@ class ParticipantFixtures extends Fixture
         $participantAdmin ->setNom('admin');
         $participantAdmin ->setPrenom('admin');
         $participantAdmin ->setEmail('admin@test.fr');
+        $participantAdmin->setTelephone("0766589450");
         $participantAdmin ->setRoles(['ROLE_ADMIN']);
         $password=$this->userPasswordHasher->hashPassword($participantAdmin, '123456');
         $participantAdmin ->setPassword($password);
@@ -35,6 +36,7 @@ class ParticipantFixtures extends Fixture
             $participant->setNom("user$i");
             $participant->setPrenom("user$i");
              $participant->setEmail("user$i@test.fr");
+             $participant->setTelephone("076658945$i");
              $participant->setRoles(['ROLE_USER']);
             $password=$this->userPasswordHasher->hashPassword( $participantAdmin, '123456');
              $participant->setPassword($password);
