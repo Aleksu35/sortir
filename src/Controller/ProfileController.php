@@ -55,4 +55,9 @@ class ProfileController extends AbstractController
             'profileForm' => $profileForm->createView(),
         ]);
     }
+#[Route('/profile/cancel', name: 'app_profile_cancel', methods: ['GET', 'POST'])]
+public function cancel(): Response
+{
+    return $this->redirectToRoute('app_home');
+}
 }

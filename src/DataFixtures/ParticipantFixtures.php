@@ -5,7 +5,6 @@ namespace App\DataFixtures;
 use App\Entity\Participant;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ParticipantFixtures extends Fixture
@@ -15,9 +14,7 @@ class ParticipantFixtures extends Fixture
     }
     public function load(ObjectManager $manager): void
     {
-      //  $faker = Factory::create();
 
-        //Création d'un administrateur
         $participantAdmin = new Participant();
         $participantAdmin ->setPseudo('admintest');
         $participantAdmin ->setNom('admin');
@@ -29,7 +26,7 @@ class ParticipantFixtures extends Fixture
         $participantAdmin ->setPassword($password);
         $manager->persist($participantAdmin);
 
-        //Créer 10 Utilisateurs classiques
+
         for($i = 1; $i <= 5; $i++){
             $participant = new Participant();
              $participant->setPseudo( "pseudo$i");
