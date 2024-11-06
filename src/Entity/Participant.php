@@ -51,7 +51,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?string $filename = null;
 
-
     #[ORM\OneToMany(targetEntity: Sortie::class, mappedBy: 'participant')]
     private Collection $sorties;
 

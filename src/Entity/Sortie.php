@@ -32,9 +32,9 @@ class Sortie
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $infosSortie = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $etat = null;
-
+    #[ORM\ManyToOne(targetEntity: Etat::class, inversedBy: "sorties")]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Etat $etat = null;
 
     #[ORM\ManytoOne(targetEntity: Participant::class , inversedBy: "sorties")]
     #[ORM\JoinColumn(nullable: false)]
@@ -153,6 +153,16 @@ class Sortie
         $this->published = $published;
 
         return $this;
+    }
+
+    public function getEtat(): ?Etat
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?Etat $etat): void
+    {
+        $this->etat = $etat;
     }
 
 }
