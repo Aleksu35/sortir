@@ -3,9 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Participant;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -23,6 +20,7 @@ class ProfileType extends AbstractType
         $participant = $options['data'];
 
         $builder
+
             ->add('pseudo', TextType::class, [
                 'label' => 'Pseudo',
                 'data' =>  $participant->getPseudo(),
@@ -58,7 +56,7 @@ class ProfileType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Image([
-                        'maxSize' => '1024k',
+                        'maxSize' => '5024k',
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
@@ -71,17 +69,6 @@ class ProfileType extends AbstractType
             ])
             ->add('enregistrer', SubmitType::class, ['label' => 'Enregistrer'])
             ->add('annuler', SubmitType::class, ['label' => 'Annuler']);
-
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            $participant = $event->getData();
-            if(  $participant &&   $participant->getFilename()) {
-                $form = $event->getForm();
-                $form->add('deleteImage',CheckboxType::class,[
-                    'mapped'=>false,
-                    'required'=>false,
-                ]);
-            }
-        });
 
     }
 

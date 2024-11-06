@@ -51,7 +51,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?string $filename = null;
 
-
     #[ORM\OneToMany(targetEntity: Sortie::class, mappedBy: 'participant')]
     private Collection $sorties;
 
@@ -108,6 +107,16 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    public function setFilename(?string $filename): void
+    {
+        $this->filename = $filename;
     }
 
     /**
@@ -194,6 +203,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
     public function getFilename(): ?string
     {
         return $this->filename;
@@ -203,6 +213,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->filename = $filename;
     }
+
 
     public function getSorties(): Collection
 
