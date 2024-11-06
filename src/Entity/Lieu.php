@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LieuRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LieuRepository::class)]
@@ -28,6 +29,20 @@ class Lieu
     #[ORM\ManyToOne(targetEntity: Ville::class, inversedBy: "lieux")]
     #[ORM\JoinColumn(nullable: false)]
     private ?Ville $ville = null;
+
+    #[ORM\OneToMany(targetEntity: Sortie::class, mappedBy: "lieux")]
+    #[ORM\JoinColumn(nullable: false)]
+    private Collection $sorties;
+
+    public function getSorties(): Collection
+    {
+        return $this->sorties;
+    }
+
+    public function setSorties(Collection $sorties): void
+    {
+        $this->sorties = $sorties;
+    }
 
     public function getVille(): ?Ville
     {

@@ -40,6 +40,20 @@ class Sortie
     #[ORM\JoinColumn(nullable: false)]
     private ?Participant $participant= null;
 
+    #[ORM\ManyToOne(targetEntity: Lieu::class, inversedBy: "sorties")]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Lieu $lieu= null;
+
+    public function getLieu(): ?Lieu
+    {
+        return $this->lieu;
+    }
+
+    public function setLieu(?Lieu $lieu): void
+    {
+        $this->lieu = $lieu;
+    }
+
     #[ORM\Column]
     private ?bool $published = false;
 
