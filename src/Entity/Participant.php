@@ -206,7 +206,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-
     public function getSorties(): Collection
 
     {
@@ -226,6 +225,13 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     }
 
+    public function removeSortie(Sortie $sortie): static
+    {
+        if ($this->sorties->removeElement($sortie)) {
+            if ($sortie->getParticipant() === $this) {
+                $sortie->setParticipant(null);
+            }
+        }
 
 //    public function removeSortie(Sortie $sortie) :static
 //
@@ -253,6 +259,10 @@ public function setCampus(?Campus $campus): static
 
     return $this;
 }
+
+        return $this;
+    }
+
 }
 
 
