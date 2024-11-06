@@ -21,7 +21,7 @@ security:
                 path: app_logout
             remember_me:
                 secret: '%env(APP_SECRET)%'
-                lifetime: 604800  
+                lifetime: 604800
                 always_remember_me: false
 
                 # where to redirect after logout
