@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\SortieRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Participant;
+
 
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
 class Sortie
@@ -36,9 +38,10 @@ class Sortie
     #[ORM\JoinColumn(nullable: false)]
     private ?Etat $etat = null;
 
-    #[ORM\ManytoOne(targetEntity: Participant::class , inversedBy: "sorties")]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Participant $participant= null;
+    // Dans votre entité Sortie
+    #[ORM\ManyToOne(targetEntity: Participant::class)]
+//    #[ORM\JoinColumn(name: "participant_id", referencedColumnName: "id", nullable: false)]
+    private ?Participant $participant = null;
 
     #[ORM\ManyToOne(targetEntity: Lieu::class, inversedBy: "sorties")]
     #[ORM\JoinColumn(nullable: false)]
@@ -124,6 +127,30 @@ class Sortie
         return $this;
     }
 
+    public function getDateCreated(): ?\DateTimeImmutable
+    {
+        return $this->dateCreated;
+    }
+
+    public function setDateCreated(\DateTimeImmutable $dateCreated): static
+    {
+        $this->dateCreated = $dateCreated;
+
+        return $this;
+    }
+
+    public function getDateUpdated(): ?\DateTimeImmutable
+    {
+        return $this->dateUpdated;
+    }
+
+    public function setDateUpdated(?\DateTimeImmutable $dateUpdated): static
+    {
+        $this->dateUpdated = $dateUpdated;
+
+        return $this;
+    }
+
     public function getNbInscriptionMax(): ?int
     {
         return $this->nbInscriptionMax;
@@ -153,7 +180,7 @@ class Sortie
         return $this->participant;
     }
 
-    public function setParticipant(?Participant $participant): static
+    public function setParticipant(?Participant $participant): self
 
     {
         $this->participant = $participant;
