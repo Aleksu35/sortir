@@ -20,6 +20,7 @@ class ProfileType extends AbstractType
         $participant = $options['data'];
 
         $builder
+
             ->add('pseudo', TextType::class, [
                 'label' => 'Pseudo',
                 'data' =>  $participant->getPseudo(),
