@@ -39,6 +39,7 @@ class ProfileController extends AbstractController
         }
         return $this->render('profile/index.html.twig', [
             'profileForm' => $profileForm->createView(),
+            'participant' => $participant,
         ]);
     }
     #[Route('/profile/cancel', name: 'app_profile_cancel', methods: ['GET', 'POST'])]
