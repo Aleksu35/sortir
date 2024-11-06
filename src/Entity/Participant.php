@@ -110,6 +110,16 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    public function setFilename(?string $filename): void
+    {
+        $this->filename = $filename;
+    }
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -194,15 +204,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getFilename(): ?bool
-    {
-        return $this->filename;
-    }
-
-    public function setFilename(?bool $filename): void
-    {
-        $this->filename = $filename;
-    }
 
     public function getSorties(): Collection
 
