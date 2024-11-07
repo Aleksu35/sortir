@@ -35,7 +35,7 @@ class SortieController extends AbstractController
 
             // Redirect to the list of sorties after saving
             //return $this->redirectToRoute('modifier-sortie', ['id' => $sortie->getId()]);
-            return $this->redirectToRoute('mes-sorties');
+            return $this->redirectToRoute('app_home');
         }
 
         // Render the form when it's not submitted or not valid
