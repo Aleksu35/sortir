@@ -34,7 +34,8 @@ class SortieController extends AbstractController
             $this->addFlash('success', "Sortie ajoutée avec succès");
 
             // Redirect to the list of sorties after saving
-            return $this->redirectToRoute('app_home');
+            //return $this->redirectToRoute('modifier-sortie', ['id' => $sortie->getId()]);
+            return $this->redirectToRoute('mes-sorties');
         }
 
         // Render the form when it's not submitted or not valid
@@ -44,14 +45,12 @@ class SortieController extends AbstractController
     }
 
     #[Route('/{id}/modifier-sortie', name: 'modifier-sortie', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function update(int $id, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $em, ParticipantRepository $participantRepository): Response
+    public function update(int $id, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $em): Response
     {
+        // Vérifiez que l'utilisateur est connecté
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
-
-        $participant = $participantRepository->find($id);
-
 
         // Récupération de la sortie à modifier en fonction de son id présent dans l'url.
         $sortie = $sortieRepository->find($id);
@@ -86,8 +85,43 @@ class SortieController extends AbstractController
         // Affiche le formulaire
         return $this->render('sortie/modifier-sortie.html.twig', [
             'sortieForm' => $sortieForm->createView(),
-            'sortie' => $sortie,
-            'participant' => $participant
+            'sortie' => $sortie
         ]);
+    }
+
+    #[Route('/mes-sorties', name: 'mes-sorties', methods: ['GET'])]
+    public function mesSorties(SortieRepository $sortieRepository): Response
+    {
+        $sorties = $sortieRepository->findBy(['participant' => $this->getUser()]);
+
+        return $this->render('sortie/mes-sorties.html.twig', [
+            'sorties' => $sorties,
+        ]);
+    }
+
+    #[Route('/{id}/delete', name: 'delete', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function delete(int $id, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $em): Response
+    {
+        $sortie = $sortieRepository->find($id);
+        if (!$sortie) {
+            throw $this->createNotFoundException('La sortie n\'a pas été trouvée.');
+        }
+
+        // Vérifier que l'utilisateur connecté est le même que celui de la sortie ou un administrateur
+        if (!($sortie->getParticipant() === $this->getUser() || $this->isGranted('ROLE_ADMIN'))) {
+            throw $this->createAccessDeniedException();
+        }
+
+        // Vérifier le token CSRF pour la suppression
+        if ($this->isCsrfTokenValid('delete' . $sortie->getId(), $request->get('token'))) {
+            $em->remove($sortie);
+            $em->flush();
+
+            $this->addFlash('success', 'Sortie supprimée avec succès !');
+        } else {
+            $this->addFlash('danger', 'Erreur de sécurité, la suppression n\'a pas pu être effectuée.');
+        }
+
+        return $this->redirectToRoute('mes-sorties');
     }
 }

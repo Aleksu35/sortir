@@ -61,6 +61,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->sorties = new ArrayCollection();
     }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,13 +86,13 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
+     * @return list<string>
      * @see UserInterface
      *
-     * @return list<string>
      */
     public function getRoles(): array
     {
@@ -230,6 +231,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->sorties->removeElement($sortie)) {
             if ($sortie->getParticipant() === $this) {
                 $sortie->setParticipant(null);
+
             }
     }
   return $this;
@@ -245,15 +247,9 @@ public function getCampus(): ?Campus
 public function setCampus(?Campus $campus): static
 {
     $this->campus = $campus;
-
     return $this;
-}
-
-
     }
 
 
 
-
-
-
+}
