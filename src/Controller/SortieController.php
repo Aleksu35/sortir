@@ -124,4 +124,25 @@ class SortieController extends AbstractController
 
         return $this->redirectToRoute('mes-sorties');
     }
+/*
+ * ***************************************************
+ * AFFICHAGE DE DETAIL SORTIE COMMENCE LES WINNERS
+ * ***************************************************
+ * ***************************************************
+ * ***************************************************
+ * */
+
+    #[Route('/showSortieDetail/{id}', name: 'showSortiedetail', requirements:['id'=>'\d+'],methods: ['GET'])]
+    public function showDetail(int $id, SortieRepository $sortieRepository): Response
+    {
+
+        $sortie = $sortieRepository->find($id);
+
+        if(!$sortie){
+            throw $this->createNotFoundException('Sortie not found');
+        }
+        return $this->render('Sortie/detail/index.html.twig', [
+            "sortie_detail"=>$sortie,
+        ]);
+    }
 }
