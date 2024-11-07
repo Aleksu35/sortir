@@ -260,11 +260,8 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         $this->campus = $campus;
 
 
-
-
-
+    }
 }
-
 
 
 

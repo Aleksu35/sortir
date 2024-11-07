@@ -46,4 +46,11 @@ class Etat
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->libelle ?? ''; // Retourne une chaîne vide si libelle est nul
+    }
+
+
 }
