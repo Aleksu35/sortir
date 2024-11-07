@@ -23,9 +23,9 @@ class CampusFixtures extends Fixture
         $manager->persist($campus);
 
 
-
-
-
+        $this->addReference('CHARTRES DE BRETAGNE', $campus);
+        $this->addReference('SAINT-HERBLAIN', $campus);
+        $this->addReference('LA ROCHE SUR YON', $campus);
 
 
         $manager->flush();

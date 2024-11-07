@@ -14,6 +14,9 @@ class ParticipantFixtures extends Fixture
     }
     public function load(ObjectManager $manager): void
     {
+        $campus1 = $this->getReference('CHARTRES DE BRETAGNE');
+        $campus2 = $this->getReference('SAINT-HERBLAIN');
+        $campus3 = $this->getReference('LA ROCHE SUR YON');
 
         $participantAdmin = new Participant();
         $participantAdmin ->setPseudo('admintest');
@@ -39,6 +42,42 @@ class ParticipantFixtures extends Fixture
              $participant->setPassword($password);
             $manager->persist($participant);
         }
+
+        $participant = new Participant();
+        $participant->setPseudo( "Prince-Ingénieur");
+        $participant->setNom("Le-Goat");
+        $participant->setPrenom("Tenzin");
+        $participant->setEmail("tenzin@mail.fr");
+        $participant->setTelephone("0766874615");
+        $participant->setCampus($campus1);
+        $participant->setRoles(['ROLE_USER']);
+        $password=$this->userPasswordHasher->hashPassword( $participantAdmin, '123456');
+        $participant->setPassword($password);
+        $manager->persist($participant);
+
+        $participant = new Participant();
+        $participant->setPseudo( "Aleksu");
+        $participant->setNom("Mesmacques");
+        $participant->setPrenom("Alexandre");
+        $participant->setEmail("alexandre@mail.fr");
+        $participant->setTelephone("0645123578");
+        $participant->setCampus($campus1);
+        $participant->setRoles(['ROLE_USER']);
+        $password=$this->userPasswordHasher->hashPassword( $participantAdmin, '123456');
+        $participant->setPassword($password);
+        $manager->persist($participant);
+
+        $participant = new Participant();
+        $participant->setPseudo( "KNNLL");
+        $participant->setNom("Hardy");
+        $participant->setPrenom("Cannelle");
+        $participant->setEmail("cannelle@mail.fr");
+        $participant->setTelephone("0681197154");
+        $participant->setCampus($campus1);
+        $participant->setRoles(['ROLE_USER']);
+        $password=$this->userPasswordHasher->hashPassword( $participantAdmin, '123456');
+        $participant->setPassword($password);
+        $manager->persist($participant);
 
         $manager->flush();
     }
