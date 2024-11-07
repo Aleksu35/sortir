@@ -244,10 +244,13 @@ public function getCampus(): ?Campus
     return $this->campus;
 }
 
-public function setCampus(?Campus $campus): static
-{
-    $this->campus = $campus;
-    return $this;
+
+    public function setCampus(?Campus $campus): static
+    {
+        $this->campus = $campus;
+        return $this;
+
+
     }
 
 
