@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Form\ProfileType;
+use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -58,6 +59,21 @@ class ProfileController extends AbstractController
             'participant' => $participant,
         ]);
     }
+
+    #[Route('/showProfile/{id}', name: 'app_profile_showdetail', requirements:['id'=>'\d+'],methods: ['GET'])]
+    public function showDetail(int $id, ParticipantRepository $participantRepository): Response
+    {
+
+        $participant = $participantRepository->find($id);
+
+              if(!$participant){
+                   throw $this->createNotFoundException('Participant not found');
+              }
+                return $this->render('profile/detail/index.html.twig', [
+                    "participant_detail"=>$participant
+               ]);
+    }
+
 
 
     #[Route('/profile/cancel', name: 'app_profile_cancel', methods: ['GET', 'POST'])]
