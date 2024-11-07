@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Campus;
+use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\Ville;
@@ -65,7 +66,12 @@ class SortieType extends AbstractType
             'placeholder' => '--Choisis ton lieu--',
             'mapped' => true,
             'required' => true
-            ]);
+            ])
+
+            ->add('etat', EntityType::class, [
+        'label' => 'Etat de la sortie',
+        'class' => Etat::class
+    ]);
     }
 
 

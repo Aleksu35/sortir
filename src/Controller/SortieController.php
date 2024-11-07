@@ -34,7 +34,8 @@ class SortieController extends AbstractController
             $this->addFlash('success', "Sortie ajoutée avec succès");
 
             // Redirect to the list of sorties after saving
-            return $this->redirectToRoute('app_home');
+            //return $this->redirectToRoute('modifier-sortie', ['id' => $sortie->getId()]);
+            return $this->redirectToRoute('mes_sorties');
         }
 
         // Render the form when it's not submitted or not valid
@@ -44,14 +45,12 @@ class SortieController extends AbstractController
     }
 
     #[Route('/{id}/modifier-sortie', name: 'modifier-sortie', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function update(int $id, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $em, ParticipantRepository $participantRepository): Response
+    public function update(int $id, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $em): Response
     {
+        // Vérifiez que l'utilisateur est connecté
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
-
-        $participant = $participantRepository->find($id);
-
 
         // Récupération de la sortie à modifier en fonction de son id présent dans l'url.
         $sortie = $sortieRepository->find($id);
@@ -86,8 +85,17 @@ class SortieController extends AbstractController
         // Affiche le formulaire
         return $this->render('sortie/modifier-sortie.html.twig', [
             'sortieForm' => $sortieForm->createView(),
-            'sortie' => $sortie,
-            'participant' => $participant
+            'sortie' => $sortie
+        ]);
+    }
+
+    #[Route('/mes-sorties', name: 'mes_sorties', methods: ['GET'])]
+    public function mesSorties(SortieRepository $sortieRepository): Response
+    {
+        $sorties = $sortieRepository->findBy(['participant' => $this->getUser()]);
+
+        return $this->render('sortie/mes-sorties.html.twig', [
+            'sorties' => $sorties,
         ]);
     }
 }
