@@ -57,8 +57,6 @@ class ProfileType extends AbstractType
                 'label' => 'Campus',
                 'class'=>Campus::class,
                 'choice_label'=>'nom',
-
-
             ])
             ->add('image', FileType::class, [
                 'mapped' => false,
