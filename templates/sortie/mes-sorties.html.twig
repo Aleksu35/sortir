@@ -18,6 +18,10 @@
                     <a href="{{ path('modifier-sortie', { 'id': sortie.id }) }}" class="btn btn-primary">
                         Modifier
                     </a>
+                    <form action="{{ path('delete', { 'id': sortie.id }) }}" method="POST" style="display: inline-block;">
+                        <input type="hidden" name="token" value="{{ csrf_token('delete' ~ sortie.id) }}">
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </form>
                 </div>
             {% endfor %}
         </div>

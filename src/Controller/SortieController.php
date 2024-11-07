@@ -35,7 +35,7 @@ class SortieController extends AbstractController
 
             // Redirect to the list of sorties after saving
             //return $this->redirectToRoute('modifier-sortie', ['id' => $sortie->getId()]);
-            return $this->redirectToRoute('mes_sorties');
+            return $this->redirectToRoute('mes-sorties');
         }
 
         // Render the form when it's not submitted or not valid
@@ -89,7 +89,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/mes-sorties', name: 'mes_sorties', methods: ['GET'])]
+    #[Route('/mes-sorties', name: 'mes-sorties', methods: ['GET'])]
     public function mesSorties(SortieRepository $sortieRepository): Response
     {
         $sorties = $sortieRepository->findBy(['participant' => $this->getUser()]);
@@ -97,5 +97,31 @@ class SortieController extends AbstractController
         return $this->render('sortie/mes-sorties.html.twig', [
             'sorties' => $sorties,
         ]);
+    }
+
+    #[Route('/{id}/delete', name: 'delete', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function delete(int $id, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $em): Response
+    {
+        $sortie = $sortieRepository->find($id);
+        if (!$sortie) {
+            throw $this->createNotFoundException('La sortie n\'a pas été trouvée.');
+        }
+
+        // Vérifier que l'utilisateur connecté est le même que celui de la sortie ou un administrateur
+        if (!($sortie->getParticipant() === $this->getUser() || $this->isGranted('ROLE_ADMIN'))) {
+            throw $this->createAccessDeniedException();
+        }
+
+        // Vérifier le token CSRF pour la suppression
+        if ($this->isCsrfTokenValid('delete' . $sortie->getId(), $request->get('token'))) {
+            $em->remove($sortie);
+            $em->flush();
+
+            $this->addFlash('success', 'Sortie supprimée avec succès !');
+        } else {
+            $this->addFlash('danger', 'Erreur de sécurité, la suppression n\'a pas pu être effectuée.');
+        }
+
+        return $this->redirectToRoute('mes-sorties');
     }
 }
