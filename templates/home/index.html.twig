@@ -24,7 +24,7 @@
                 <td>{{ sortie.nbInscriptionMax }}</td>
                 <td>{{ sortie.etat }}</td>
                 <td><p>Inscrit</p></td>
-                <td>{{ sortie.participant.pseudo }}</td>
+                <td><a href="{{ path('app_profile_update', { 'id': sortie.participant.id }) }}">{{ sortie.participant.pseudo }}</a></td>
                 <td><a href="{{ path('modifier-sortie', { 'id': sortie.id }) }}">Modifier</a></td>
 
             </tr>
