@@ -60,6 +60,9 @@ class Sortie
     #[ORM\Column]
     private ?bool $published = false;
 
+    #[ORM\ManyToOne(inversedBy: 'sortie')]
+    private ?Campus $campus = null;
+
 
     public function __construct()
 
@@ -204,6 +207,18 @@ class Sortie
     public function setEtat(?Etat $etat): void
     {
         $this->etat = $etat;
+    }
+
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?Campus $campus): static
+    {
+        $this->campus = $campus;
+
+        return $this;
     }
 
 }
