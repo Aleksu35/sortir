@@ -5,6 +5,9 @@ namespace App\Form;
 use App\Entity\Campus;
 use App\Entity\Participant;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -15,48 +18,40 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+
 class ProfileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $participant = $options['data'];
-
         $builder
-
             ->add('pseudo', TextType::class, [
                 'label' => 'Pseudo',
-                'data' =>  $participant->getPseudo(),
+                'disabled' => true,
             ])
             ->add('prenom', TextType::class, [
-                'label' => 'Prénom',
-                'data' => $participant->getPrenom(),
+                'label' => 'Prénom', 'required' => false
             ])
             ->add('nom', TextType::class, [
-                'label' => 'Nom',
-                'data' =>  $participant->getNom(),
+                'label' => 'Nom', 'required' => false
             ])
             ->add('telephone', TextType::class, [
-                'label' => 'Téléphone',
-                'data' =>  $participant->getTelephone(),
+                'label' => 'Téléphone', 'required' => false
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email',
-                'data' => $participant->getEmail(),
+                'label' => 'Email', 'disabled' => true
             ])
-            ->add('password', PasswordType::class, [
-                'label' => 'Mot de passe',
-                'mapped' => false,
+            ->add('plainPassword', RepeatedType::class, [
+
+                'type' => PasswordType::class,
                 'required' => false,
-            ])
-            ->add('confirm_password', PasswordType::class, [
-                'label' => 'Confirmation',
                 'mapped' => false,
-                'required' => false,
+                'first_options' => ['attr' => ['placeholder' => 'Enter Your New Password']],
+                'second_options' => ['attr' => ['placeholder' => 'Repeat Your Password']],
             ])
             ->add('campus', EntityType::class, [
                 'label' => 'Campus',
-                'class'=>Campus::class,
-                'choice_label'=>'nom',
+                'class' => Campus::class,
+                'choice_label' => 'nom',
             ])
             ->add('image', FileType::class, [
                 'mapped' => false,
@@ -64,25 +59,33 @@ class ProfileType extends AbstractType
                 'constraints' => [
                     new Image([
                         'maxSize' => '5024k',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png',
-                            'image/jpg',
-                        ],
+                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/jpg'],
                         'mimeTypesMessage' => 'Please upload a valid image',
                     ])
                 ],
                 'label' => 'Upload images',
             ])
             ->add('enregistrer', SubmitType::class, ['label' => 'Enregistrer'])
-            ->add('annuler', SubmitType::class, ['label' => 'Annuler']);
+            ->add('annuler', SubmitType::class, ['label' => 'Annuler'])
 
+            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) use ($options) {
+                $form = $event->getForm();
+                $participant = $event->getData();
+                $plainPassword = $form->get('plainPassword')->getData();
+
+                if ($plainPassword) {
+                    $passwordHasher = $options['passwordHasher'];
+                    $hashedPassword = $passwordHasher->hashPassword($participant, $plainPassword);
+                    $participant->setPassword($hashedPassword);
+                }
+            });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Participant::class,
+            'passwordHasher' => null
         ]);
     }
 }
