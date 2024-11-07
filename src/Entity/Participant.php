@@ -231,22 +231,11 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
             if ($sortie->getParticipant() === $this) {
                 $sortie->setParticipant(null);
             }
+    }
+  return $this;
+
         }
 
-//    public function removeSortie(Sortie $sortie) :static
-//
-//{
-//    if($this->sorties->removeElement($sortie)) {
-//
-//        if ($sortie->getUser() === $this) {
-//            $sortie->setUser(null);
-//
-//        }
-//    }
-//    return $this
-//
-//        }
-//    }
 
 public function getCampus(): ?Campus
 {
@@ -260,10 +249,10 @@ public function setCampus(?Campus $campus): static
     return $this;
 }
 
-        return $this;
+
     }
 
-}
+
 
 
 
