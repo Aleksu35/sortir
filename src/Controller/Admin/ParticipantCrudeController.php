@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\Participant;
 use App\Form\Admin\AddParticipantType;
+use App\Form\Admin\ModifyParticipantType;
+use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,4 +44,41 @@ class ParticipantCrudeController extends AbstractController
             'participantForm' => $participantForm->createView(),
         ]);
     }
+
+    /////////////////////////////
+    ///
+    #[Route('/admin/participant-modifier/{id}', name: 'app_participant_modifier', requirements:['id'=>'\d+'],methods: ['GET','POST'])]
+    public function modifierParticipant(int $id,Request $request, ParticipantRepository $participantRepository, EntityManagerInterface $em): Response
+    {
+
+        $participant = $participantRepository->find($id);
+        $participantForm = $this->createForm(ModifyParticipantType::class, $participant);
+        $participantForm ->handleRequest($request);
+        if ($participantForm ->isSubmitted() && $participantForm ->isValid()) {
+            if(!$participant){
+            throw $this->createNotFoundException('Participant not found');
+        }
+
+            $em->persist($participant);
+
+            $em->flush();
+            return $this->redirectToRoute('app_admin');}
+
+        return $this->render('admin/participant_crude/modifier.html.twig', [
+            "participantForm_detail"=>$participantForm->createView(),
+        ]);
+    }
+ #[Route('/admin/participant-delete/{id}', name: 'app_participant_delete', requirements:['id'=>'\d+'],methods: ['GET'])]
+    public function deleteParticipant(int $id, ParticipantRepository $participantRepository, EntityManagerInterface $em): Response
+    {
+
+        $participant = $participantRepository->find($id);
+        if(!$participant){
+        throw $this->createNotFoundException('Participant not found');
+        }
+        $em->remove($participant);
+        $em->flush();
+        return $this->redirectToRoute('app_admin');
+    }
+
 }
