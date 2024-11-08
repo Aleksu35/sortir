@@ -30,13 +30,13 @@ class SortieType extends AbstractType
             ->add('nom', TextType::class, [
                 'label' => 'Nom de la sortie',
             ])
-            ->add('dateHeureDebut', DateTimeType::class, [  // Utilisez DateTimeType ici
+            ->add('dateHeureDebut', DateTimeType::class, [
                 'label' => 'Date et heure de la sortie',
-                'widget' => 'single_text',  // Affichage sous forme d'un seul champ de texte
+                'widget' => 'single_text',
             ])
-            ->add('dateLimiteInscription', DateTimeType::class, [  // Utilisez DateTimeType ici aussi
+            ->add('dateLimiteInscription', DateTimeType::class, [
                 'label' => 'Date limite d\'inscription',
-                'widget' => 'single_text',  // Affichage sous forme d'un seul champ de texte
+                'widget' => 'single_text',
             ])
             ->add('nbInscriptionMax', IntegerType::class, [
                 'label' => 'Nombre de places',
