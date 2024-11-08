@@ -15,16 +15,16 @@
                 <ul class="list-unstyled">
                     <li><a href="{{ path('app_admin') }}" class="d-block py-2">List Participant & Admin</a></li>
                     <li><a href="{{ path('app_participant_create') }}" class="d-block py-2 active">Ajouter Participant</a></li>
-                    <li><a href="#" class="d-block py-2">Ajouter Campus</a></li>
+                    <li><a href="{{ path('app_campus_create') }}" class="d-block py-2 active">Ajouter Campus</a></li>
                     <li><a href="#" class="d-block py-2">Ajouter Ville</a></li>
                 </ul>
             </aside>
 
 
             <div class="col-md-9 col-lg-10 mt-4 h-50">
-                <div class="row justify-content-around">
+                <div class="row justify-content-start">
                     <!-- Participant Table -->
-                    <div class="col-12 table-responsive mb-5">
+                    <div class="col-12 table-responsive mb-5 justify-content-between">
                         <h2 class="text-center mb-4">List Participants</h2>
                         <table class="table table-bordered table-striped">
                             <thead class="thead-dark">
@@ -36,6 +36,8 @@
                                 <th>Pseudo</th>
                                 <th>Rôle</th>
                                 <th>Image</th>
+                                <th>Modifier</th>
+                                <th>Suprimer</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -54,13 +56,33 @@
                                                  alt="Participant Image"
                                                  style="width: 30px; height: 30px;">
                                         </td>
+                                   <td><a href="{{ path('app_participant_modifier', { 'id': participant.id }) }}" class="btn btn-primary">  >>> </a></td>
+                                        <td> <a href="{{ path('app_participant_delete', { 'id': participant.id }) }}" class="btn btn-danger">---</a></td>
                                     </tr>
                                 {% endif %}
                             {% endfor %}
                             </tbody>
                         </table>
-                    </div>
+                        <table class="table table-bordered table-striped">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Campus</th>
+                                <th>Modifier</th>
+                                <th>Suprimer</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for campus in campusList %}
+                                    <tr>
+                                        <td>{{ campus.nom }}</td>
+                                       <td><a href="{{ path('app_campus_modifier', { 'id': campus.id }) }}" class="btn btn-primary">  >>> </a></td>
+                                        <td> <a href="{{ path('app_campus_delete', { 'id': campus.id }) }}" class="btn btn-danger">---</a></td>
+                                    </tr>
 
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                     <!-- Admin Table -->
                     <div class="col-12 table-responsive">
                         <h2 class="text-center mb-4">List Admin</h2>

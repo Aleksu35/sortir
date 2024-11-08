@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+        <section class="container-fluid  w-75 h-75">
+
+            <button class="btn btn-primary d-md-none mb-3" id="sidebarToggle">  >>> </button>
+
+            <div class="row d-flex justify-content-around">
+
+                <aside class="col-md-3 col-lg-2 sidebar bg-light p-3" style="margin-top: 50px; height: 75%" id="sidebarMenu">
+                    <h3 class="text-center mt-4">ESPACE ADMIN</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ path('app_admin') }}" class="d-block py-2">List Participant & Admin</a></li>
+                        <li><a href="{{ path('app_participant_create') }}" class="d-block py-2 active">Ajouter Participant</a></li>
+                        <li><a href="{{ path('app_campus_create') }}" class="d-block py-2 active">Ajouter Campus</a></li>
+                        <li><a href="#" class="d-block py-2">Ajouter Ville</a></li>
+                    </ul>
+                </aside>
+                <div class="col-md-9 col-lg-10 mt-4 h-50">
+                    {{ form_start(participantForm_detail) }}
+                    {{ form_end(participantForm_detail) }}
+                </div>
+            </div>
+
+        </section>
+
+
+{% endblock %}
+
