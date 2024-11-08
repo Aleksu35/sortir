@@ -124,25 +124,61 @@ class SortieController extends AbstractController
 
         return $this->redirectToRoute('mes-sorties');
     }
-/*
- * ***************************************************
- * AFFICHAGE DE DETAIL SORTIE COMMENCE LES WINNERS
- * ***************************************************
- * ***************************************************
- * ***************************************************
- * */
 
-    #[Route('/showSortieDetail/{id}', name: 'showSortiedetail', requirements:['id'=>'\d+'],methods: ['GET'])]
+    /*
+     * ***************************************************
+     * AFFICHAGE DE DETAIL SORTIE COMMENCE LES WINNERS
+     * ***************************************************
+     * ***************************************************
+     * ***************************************************
+     * */
+
+    #[Route('/showSortieDetail/{id}', name: 'showSortiedetail', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function showDetail(int $id, SortieRepository $sortieRepository): Response
     {
 
         $sortie = $sortieRepository->find($id);
 
-        if(!$sortie){
+        if (!$sortie) {
             throw $this->createNotFoundException('Sortie not found');
         }
         return $this->render('Sortie/detail/index.html.twig', [
-            "sortie_detail"=>$sortie,
+            "sortie_detail" => $sortie,
         ]);
     }
+
+    #[Route('/{id}/inscription', name: 'inscription_sortie')]
+    public function inscrire(int $id, SortieRepository $sortieRepository, EntityManagerInterface $em): Response
+    {
+        // Récupérer la sortie par son ID
+        $sortie = $sortieRepository->find($id);
+        if (!$sortie) {
+            throw $this->createNotFoundException('La sortie n\'existe pas.');
+        }
+
+        // Vérifier que l'utilisateur est connecté
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login'); // Redirige vers la connexion si non connecté
+        }
+
+        // Vérifier si l'utilisateur est déjà inscrit
+        if ($sortie->getParticipants()->contains($user)) {
+            $this->addFlash('warning', 'Vous êtes déjà inscrit à cette sortie.');
+            return $this->redirectToRoute('app_home'); // Rediriger avec message d'avertissement
+        }
+
+        // Ajouter l'utilisateur à la liste des participants
+        $sortie->addParticipant($user);
+
+        // Sauvegarder les modifications
+        $em->flush();
+
+        // Ajouter un message flash pour indiquer l'inscription réussie
+        $this->addFlash('success', 'Vous êtes inscrit à la sortie !');
+
+        // Rediriger vers la page de la sortie ou la page d'accueil
+        return $this->redirectToRoute('app_home');
+    }
+
 }

@@ -1,6 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <!-- Conteneur d'alignement gauche pour la date et le participant connecté -->
+    <div class="d-flex justify-content-end mb-3">
+        <div>
+            <p><h5>Date du jour : {{ "now"|date("d-m-Y") }}</h5></p>
+            {% if app.user %}
+                <p><h5>Participant : {{ app.user.pseudo }}</h5></p>
+            {% else %}
+                <p>Vous n'êtes pas connecté.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <h3> Filtrer les sorties</h3>
+    <br>
      {{ form_start(form) }}
     {{ form_widget(form) }}
 <button type="submit" class="btn btn-primary">Rechercher</button>
@@ -24,7 +38,7 @@
             <tr>
 
                 <th scope="row">{{ sortie.nom }}</th>
-                <td>{{ sortie.dateHeureDebut|date('d-m-Y') }}</td>
+                <td>{{ sortie.dateHeureDebut|date('d-m-Y H:i') }}</td>
                 <td>{{ sortie.dateLimiteInscription|date('d/m/Y') }}</td>
                 <td>{{ sortie.nbInscriptionMax }}</td>
                 <td>{{ sortie.etat }}</td>
@@ -36,7 +50,7 @@
 
         {% else %}
             <tr>
-                <td colspan="8" class="text-center">Aucune sortie trouvée</td>  {# Correction du colspan pour inclure toutes les colonnes #}
+                <td colspan="8" class="text-center">Aucune sortie trouvée</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -44,34 +58,3 @@
     <a href="{{ path('app_sortie_create') }}" class="btn btn-primary">Créer une sortie</a>
 {% endblock %}
 
-
-
-
-{#{% block body %}#}
-{#    <h2 class="text-center mb-4">Toutes les Sorties</h2>#}
-
-{#    <div class="container mt-4">#}
-{#        {% if sorties is empty %}#}
-{#            <p>Aucune sortie disponible.</p>#}
-{#        {% else %}#}
-{#            <div class="row">#}
-{#                {% for sortie in sorties %}#}
-{#                    <div class="col-md-4 mb-4">#}
-{#                        <div class="card">#}
-{#                            <img src="{{ asset('uploads/images/' ~ sortie.image) }}" class="card-img-top" alt="Image de la sortie">#}
-{#                            <div class="card-body">#}
-{#                                <h5 class="card-title">{{ sortie.nom }}</h5>#}
-{#                                <p class="card-text">{{ sortie.description }}</p>#}
-
-{#                                <p class="text-muted">Organisée par {{ sortie.participant.pseudo }}</p>#}
-{#                                <p class="mb-1">Date de la Sortie : {{ sortie.dateHeureDebut|date('d/m/Y') }}</p>#}
-{#                                <p class="text-muted">Clôture {{ sortie.dateLimiteInscription|date('d/m/Y') }}</p>#}
-{#                                <a href="{{ path('modifier-sortie', { 'id': sortie.id }) }}" class="btn btn-primary">Modifier</a>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                {% endfor %}#}
-{#            </div>#}
-{#        {% endif %}#}
-{#    </div>#}
-{#{% endblock %}#}
