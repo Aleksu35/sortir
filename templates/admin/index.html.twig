@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+
+    <section class="container-fluid d-flex justify-content-center w-75 h-75">
+
+        <button class="btn btn-primary d-md-none mb-3" id="sidebarToggle">  >>> </button>
+
+        <div class="row">
+
+            <aside class="col-md-3 col-lg-2 sidebar bg-light p-3" style="margin-top: 87px; height: 75%" id="sidebarMenu">
+                <h3 class="text-center mt-4">ESPACE ADMIN</h3>
+                <ul class="list-unstyled">
+                    <li><a href="{{ path('app_admin') }}" class="d-block py-2">List Participant & Admin</a></li>
+                    <li><a href="{{ path('app_participant_create') }}" class="d-block py-2 active">Ajouter Participant</a></li>
+                    <li><a href="#" class="d-block py-2">Ajouter Campus</a></li>
+                    <li><a href="#" class="d-block py-2">Ajouter Ville</a></li>
+                </ul>
+            </aside>
+
+
+            <div class="col-md-9 col-lg-10 mt-4 h-50">
+                <div class="row justify-content-around">
+                    <!-- Participant Table -->
+                    <div class="col-12 table-responsive mb-5">
+                        <h2 class="text-center mb-4">List Participants</h2>
+                        <table class="table table-bordered table-striped">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Email</th>
+                                <th>Téléphone</th>
+                                <th>Pseudo</th>
+                                <th>Rôle</th>
+                                <th>Image</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for participant in participants %}
+                                {% if 'ROLE_USER' in participant.roles %}
+                                    <tr>
+                                        <td>{{ participant.nom }}</td>
+                                        <td>{{ participant.prenom }}</td>
+                                        <td>{{ participant.email }}</td>
+                                        <td>{{ participant.telephone }}</td>
+                                        <td>{{ participant.pseudo }}</td>
+                                        <td>{{ 'User' }}</td>
+                                        <td>
+                                            <img src="{{ asset('uploads/images/' ~ participant.filename) }}"
+                                                 class="img-fluid border-3 mb-3 shadow-sm rounded-circle"
+                                                 alt="Participant Image"
+                                                 style="width: 30px; height: 30px;">
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Admin Table -->
+                    <div class="col-12 table-responsive">
+                        <h2 class="text-center mb-4">List Admin</h2>
+                        <table class="table table-bordered table-striped">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Email</th>
+                                <th>Téléphone</th>
+                                <th>Pseudo</th>
+                                <th>Rôle</th>
+                                <th>Image</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for participant in participants %}
+                                {% if 'ROLE_ADMIN' in participant.roles %}
+                                    <tr>
+                                        <td>{{ participant.nom }}</td>
+                                        <td>{{ participant.prenom }}</td>
+                                        <td>{{ participant.email }}</td>
+                                        <td>{{ participant.telephone }}</td>
+                                        <td>{{ participant.pseudo }}</td>
+                                        <td>{{ 'Admin' }}</td>
+                                        <td>
+                                            <img src="{{ asset('uploads/images/' ~ participant.filename) }}"
+                                                 class="img-fluid border-3 mb-3 shadow-sm rounded-circle"
+                                                 alt="Admin Image"
+                                                 style="width: 30px; height: 30px;">
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function () {
+            const sidebar = document.getElementById('sidebarMenu');
+            sidebar.classList.toggle('d-none');
+        });
+    </script>
+
+{% endblock %}
