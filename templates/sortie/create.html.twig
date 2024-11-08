@@ -9,7 +9,8 @@
             {{ form_widget(sortieForm) }}
 
             <div>
-                <button class="btn btn-custom">Créer</button>
+                <button type="submit" class="btn btn-custom" name="save" value="save">Enregistrer</button>
+                <button type="submit" class="btn btn-custom" name="publish" value="publish">Publier la sortie</button>
             </div>
             {{ form_end(sortieForm) }}
         </div>

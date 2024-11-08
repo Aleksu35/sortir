@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Sortie;
 use App\Form\SortieType;
+use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,33 +17,39 @@ class SortieController extends AbstractController
 {
 
     #[Route('/create', name: 'app_sortie_create', methods: ['GET', 'POST'])]
-    public function create(Request $request, EntityManagerInterface $em): Response
+    public function create(Request $request, EntityManagerInterface $em, EtatRepository $etatRepository): Response
     {
         $sortie = new Sortie();
         $sortie->setParticipant($this->getUser());
+
+        // Accéder aux états spécifiques depuis la base de données
+        $etatSaved = $etatRepository->findOneBy(['libelle' => 'créee']);
+        $etatPublished = $etatRepository->findOneBy(['libelle' => 'ouverte']);
 
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
-            $sortie->setPublished(true);
+            // Vérifier quel bouton a été pressé
+            if ($request->request->get('save') !== null && $etatSaved) {
+                $sortie->setEtat($etatSaved);
+            } elseif ($request->request->get('publish') !== null && $etatPublished) {
+                $sortie->setEtat($etatPublished);
+            }
 
             $em->persist($sortie);
             $em->flush();
 
-
             $this->addFlash('success', "Sortie ajoutée avec succès");
-
-            // Redirect to the list of sorties after saving
-            //return $this->redirectToRoute('modifier-sortie', ['id' => $sortie->getId()]);
             return $this->redirectToRoute('app_home');
         }
 
-        // Render the form when it's not submitted or not valid
         return $this->render('sortie/create.html.twig', [
             'sortieForm' => $sortieForm->createView(),
         ]);
     }
+
+
 
     #[Route('/{id}/modifier-sortie', name: 'modifier-sortie', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function update(int $id, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $em): Response
