@@ -1,3 +1,103 @@
 body {
-    background-color: skyblue;
+    /*background-color: #ffc0cb;*/
+    background-size: cover;
+    background: linear-gradient(to bottom, #FFC0CB, #D3A1E6) no-repeat;
+    min-height: 100vh;
 }
+
+.navbar a {
+    position: relative;
+}
+
+.btn-custom {
+    background-color: #B39DDB;
+    color: white;
+    border-color: #ffffff;
+    border-width: 2px;
+}
+
+.btn-custom:hover {
+    background-color: #9575CD;
+}
+
+.btn-custom-delete {
+    background-color: #d56173;
+    color: #fff;
+    border: 2px solid #ffffff;
+}
+
+.btn-custom-delete:hover {
+    background-color: #9a2134; /* Quand on survole, on passe à une couleur plus vive */
+    border-color: #9a2134;
+    color: #fff;
+}
+
+.index-container {
+    margin: 50px;
+}
+
+.mes-sorties-container {
+    margin: 50px;
+}
+
+.modifier-sortie-container {
+    margin: 50px;
+}
+
+@keyframes rotateStar {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(45deg); }
+}
+
+.star {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 1;
+    animation: rotateStar 1s infinite ease-in-out;
+}
+
+.star::before,
+.star::after,
+.star span::before,
+.star span::after {
+    content: '';
+    position: absolute;
+    background-color: gold;
+    width: 10px;
+    height: 2px;
+    top: 50%;
+    left: 50%;
+    transform-origin: center;
+}
+
+.star::before {
+    transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.star::after {
+    transform: translate(-50%, -50%) rotate(72deg);
+}
+
+.star span::before {
+    transform: translate(-50%, -50%) rotate(144deg);
+}
+
+.star span::after {
+    transform: translate(-50%, -50%) rotate(216deg);
+}
+
+.star span {
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+.star span::before {
+    transform: translate(-50%, -50%) rotate(288deg);
+}
+
+.star span::after {
+    transform: translate(-50%, -50%) rotate(360deg);
+}
+
