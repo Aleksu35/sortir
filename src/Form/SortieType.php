@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 // Utiliser DateTimeType pour la gestion des dates
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -60,20 +61,28 @@ class SortieType extends AbstractType
                 'mapped' => false
             ])
             ->add('lieu', EntityType::class, [
-            'label' => 'Lieu',
-            'class' => Lieu::class,
-            'choice_label' => 'nom',
-            'placeholder' => '--Choisis ton lieu--',
-            'mapped' => true,
-            'required' => true
+                'label' => 'Lieu',
+                'class' => Lieu::class,
+                'choice_label' => 'nom',
+                'placeholder' => '--Choisis ton lieu--',
+                'mapped' => true,
+                'required' => true
             ])
+//            ->add('etat', EntityType::class, [
+//                'label' => 'Etat de la sortie',
+//                'class' => Etat::class
+//            ])
+            ->add('nom');
 
-            ->add('etat', EntityType::class, [
-        'label' => 'Etat de la sortie',
-        'class' => Etat::class
-    ]);
+//            ->add('save', SubmitType::class, [
+//                'label' => 'Enregistrer',
+////                'attr' => ['class' => 'btn btn-custom', 'value' => 'save']
+//            ])
+//            ->add('publish', SubmitType::class, [
+//                'label' => 'Publier',
+////                'attr' => ['class' => 'btn btn-custom', 'value' => 'publish']
+//            ]);
     }
-
 
 
     public function configureOptions(OptionsResolver $resolver): void
