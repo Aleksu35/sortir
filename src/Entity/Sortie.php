@@ -43,6 +43,9 @@ class Sortie
 //    #[ORM\JoinColumn(name: "participant_id", referencedColumnName: "id", nullable: false)]
     private ?Participant $participant = null;
 
+    // il faut faire un make entity sortie et rajouter une relation vers participant de type ManyToMany (dans terminal
+    // de commande !! Faire les relations dans le terminal tout va se faire tout seul ça va être très cool
+
     #[ORM\ManyToOne(targetEntity: Lieu::class, inversedBy: "sorties")]
     #[ORM\JoinColumn(nullable: false)]
     private ?Lieu $lieu= null;

@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Créer une sortie{% endblock %}
+<div class="container">
+    {% block body %}
 
-{% block body %}
     <h1>Créer une sortie</h1>
     {{ form_start(sortieForm) }}
     {{ form_widget(sortieForm) }}
@@ -11,4 +12,5 @@
         <button class="btn btn-primary">Créer</button>
     </div>
     {{ form_end(sortieForm) }}
+</div>
 {% endblock %}

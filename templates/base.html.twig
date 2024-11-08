@@ -10,9 +10,9 @@
     <link rel="icon" href="{{ asset('img/mirror-ball.png') }}" type="image/png">
 
 
-    {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
-    {% endblock %}
+{#   {% block stylesheets %}#}
+{#        <!--<link rel="stylesheet" href="{{ asset('styles/app.css') }}"> -->#}
+{#    {% endblock %} #}
 
     {% block javascripts %}
         {% block importmap %}{{ importmap('app') }}{% endblock %}
@@ -57,6 +57,16 @@
                         <a class="nav-link text-decoration-none" href="{{ path('mes-sorties') }}">Modifier mes sorties</a>
                     </li>
                     {% endif %}
+
+                   {#/////////////////////////////Je toucherai plustart TENZIN--hehe
+                   {% if 'ROLE_ADMIN' in app.user.roles %}
+
+                        <li class="nav-item">
+                            <a class="nav-link text-decoration-none" href="{{ path('app_admin') }}">Espace admin</a>
+                        </li>
+                    {% endif %}
+                    /////////////////////////////Je toucherai plustart TENZIN--hehe#}
+
 
                     {% if app.user %}
                         <li class="nav-item">

@@ -3,12 +3,14 @@
 {% block title %}Modifier une sortie{% endblock %}
 
 {% block body %}
-    <h1>Modifier une sortie</h1>
-    {{ form_start(sortieForm) }}
-    {{ form_widget(sortieForm) }}
+    <div class="modifier-sortie-container">
+        <h1 style="color: #824b9f; margin-bottom: 30px;">Modifier une sortie</h1>
+        {{ form_start(sortieForm) }}
+        {{ form_widget(sortieForm) }}
 
-    <div>
-        <button class="btn btn-primary">Enregistrer les modifications</button>
+        <div>
+            <button class="btn btn-custom">Enregistrer les modifications</button>
+        </div>
+        {{ form_end(sortieForm) }}
     </div>
-    {{ form_end(sortieForm) }}
 {% endblock %}

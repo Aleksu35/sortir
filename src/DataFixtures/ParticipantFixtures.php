@@ -24,6 +24,7 @@ class ParticipantFixtures extends Fixture
         $participantAdmin ->setPrenom('admin');
         $participantAdmin ->setEmail('admin@test.fr');
         $participantAdmin->setTelephone("0766589450");
+        $participantAdmin->setCampus($campus1);
         $participantAdmin ->setRoles(['ROLE_ADMIN']);
         $password=$this->userPasswordHasher->hashPassword($participantAdmin, '123456');
         $participantAdmin ->setPassword($password);
