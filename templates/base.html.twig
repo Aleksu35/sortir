@@ -58,14 +58,14 @@
                     </li>
                     {% endif %}
 
-                   {#/////////////////////////////Je toucherai plustart TENZIN--hehe
-                   {% if 'ROLE_ADMIN' in app.user.roles %}
 
+                    {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav-item">
                             <a class="nav-link text-decoration-none" href="{{ path('app_admin') }}">Espace admin</a>
                         </li>
                     {% endif %}
-                    /////////////////////////////Je toucherai plustart TENZIN--hehe#}
+
+
 
 
                     {% if app.user %}

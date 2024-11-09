@@ -47,10 +47,18 @@ class Authenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
+        // RBC
+        if (in_array('ROLE_ADMIN', $token->getUser()->getRoles())) {
+
+            return new RedirectResponse($this->urlGenerator->generate('app_admin'));
+        }
+
+        // Redirect regular user to the home page
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
 
