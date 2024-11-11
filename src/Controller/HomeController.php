@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\FiltreSortie;
 use App\Form\FiltreSortieType;
+use App\Repository\CampusRepository;
 use App\Repository\SortieRepository;
+use App\Repository\VilleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,4 +36,5 @@ class HomeController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
 }

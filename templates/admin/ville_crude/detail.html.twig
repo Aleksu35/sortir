@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block aside %}
+
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Ville</th>
+                        <th>Codepostal</th>
+                        <th>Modifier</th>
+                        <th>Suprimer</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for ville in villeList %}
+                        <tr>
+                            <td>{{ ville.nom }}</td>
+                            <td>{{ ville.codePostal }}</td>
+                            <td><a href="{{ path('app_ville_modifier', { 'id': ville.id }) }}" class="btn btn-primary">  >>> </a></td>
+                            <td> <a href="{{ path('app_ville_delete', { 'id': ville.id }) }}" class="btn btn-danger">---</a></td>
+                        </tr>
+
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'admin/dashboard_base.html.twig' %}
+
+
+
+{% block body %}
+
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Campus</th>
+                    <th>Modifier</th>
+                    <th>Suprimer</th>
+                    <th>Ajouter</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for campus in campusList %}
+                    <tr>
+                        <td>{{ campus.nom }}</td>
+                        <td><a href="{{ path('app_campus_modifier', { 'id': campus.id }) }}" class="btn btn-primary">  >>> </a></td>
+                        <td> <a href="{{ path('app_campus_delete', { 'id': campus.id }) }}" class="btn btn-danger">---</a></td>
+                        <td> <a href="{{ path('app_campus_create', { 'id': campus.id }) }}" class="btn btn-danger">+++</a></td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+
+
+{% endblock %}

@@ -2,19 +2,20 @@
 
 namespace App\Form\Admin;
 
-use App\Entity\Campus;
+use App\Entity\Ville;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ModifyCampusType extends AbstractType
+class AddVilleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('nom')
-            ->add('ajouter', SubmitType::class, ['label' => 'Modifier'])
+            ->add('codepostal')
+            ->add('ajouter', SubmitType::class, ['label' => 'Ajouter'])
             ->add('annuler', SubmitType::class, ['label' => 'Annuler'])
         ;
     }
@@ -22,7 +23,7 @@ class ModifyCampusType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Campus::class,
+            'data_class' => Ville::class,
         ]);
     }
 }

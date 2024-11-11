@@ -38,25 +38,13 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # Allow access to the login page without authentication
+
         - { path: ^/login }
-
-        # Allow only admins to access the /admin page
         - { path: ^/admin, roles: ROLE_ADMIN }
-
-        # Allow access to all users (including admins) for the main pages
         - { path: ^/, roles: ROLE_USER }
-
-        # Allow users to access their profile
         - { path: ^/profile, roles: ROLE_USER }
-
-        # Allow authenticated users to modify content
         - { path: ^/modifier-sortie, roles: IS_AUTHENTICATED_FULLY }
-
-        # Catch-all rule to ensure that authenticated users can access any other page
         - { path: ^/.*, roles: ROLE_USER }
-
-
 
 
 when@test:
