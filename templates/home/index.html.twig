@@ -46,11 +46,20 @@
                 <td>{{ sortie.nbInscriptionMax }}</td>
                 <td>{{ sortie.etat }}</td>
                 <td><p>Inscrit</p></td>
-                <td><a href="{{ path('app_profile_showdetail', { 'id': sortie.participant.id }) }}">{{ sortie.participant.pseudo }}</a></td>
-                {% if sortie.participant == app.user %}   {# ACCESS SEILMENT OUR CREATEUR SORTIE--Canelle c'est fait, haaaaaaaah #}
-                <td><a href="{{ path('modifier-sortie', { 'id': sortie.id }) }}">Modifier</a></td>
+                <td>
+                    {% if sortie.organisateur is not null and sortie.organisateur.id is not empty %}
+                        <a href="{{ path('app_profile_showdetail', { 'id': sortie.organisateur.id }) }}">
+                            {{ sortie.organisateur.pseudo }}
+                        </a>
                     {% else %}
-                        <td><a href="{{ path('showSortiedetail', { 'id': sortie.id }) }}">Affichir</a></td>
+                        Non défini
+                    {% endif %}
+                </td>
+
+                    {% if sortie.organisateur == app.user %}
+                        <td><a href="{{ path('modifier-sortie', { 'id': sortie.id }) }}">Modifier</a></td>
+                {% else %}
+                        <td><a href="{{ path('showSortiedetail', { 'id': sortie.id }) }}">Afficher</a></td>
               {% endif %}
 
 
