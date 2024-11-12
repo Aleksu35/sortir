@@ -46,25 +46,22 @@
                 <td>{{ sortie.nbInscriptionMax }}</td>
                 <td>{{ sortie.etat }}</td>
                 <td><p>Inscrit</p></td>
+                <td><a href="{{ path('app_profile_showdetail', { 'id': sortie.participant.id }) }}">{{ sortie.participant.pseudo }}</a></td>
                 <td>
-                    {% if sortie.organisateur is not null and sortie.organisateur.id is not empty %}
-                        <a href="{{ path('app_profile_showdetail', { 'id': sortie.organisateur.id }) }}">
-                            {{ sortie.organisateur.pseudo }}
-                        </a>
-                    {% else %}
+                {% if is_granted('POST_EDIT', sortie) %}
+                    <a href="{{ path('modifier-sortie', {'id': sortie.id}) }}">Modifier</a>
+                {% endif %}
 
-                        Non défini
-                    {% endif %}
+
+                {% if is_granted('POST_PUBLISHED', sortie) %}
+                    <a href="{{ path('app_sortie_publier', {'id': sortie.id}) }}">Publier</a>
+                {% endif %}
+
+                 {% if is_granted('POST_VIEW', sortie) %}
+                     <a href="{{ path('showSortiedetail', {'id': sortie.id}) }}">Afficher</a>
+                 {% endif %}
+
                 </td>
-
-                    {% if sortie.organisateur == app.user %}
-                        <td><a href="{{ path('modifier-sortie', { 'id': sortie.id }) }}">Modifier</a></td>
-                {% else %}
-
-                        <td><a href="{{ path('showSortiedetail', { 'id': sortie.id }) }}">Afficher</a></td>
-              {% endif %}
-
-
         {% else %}
             <tr>
                 <td colspan="8" class="text-center">Aucune sortie trouvée</td>

@@ -7,11 +7,13 @@ use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
+use App\Security\Voter\DroitsBoutonsVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class SortieController extends AbstractController
 {
@@ -51,26 +53,35 @@ class SortieController extends AbstractController
     }
 
 
-    /**
-     * Handle the state setting based on the button clicked.
-     *
-     * @param Request $request
-     * @param $etatSaved
-     * @param $etatPublished
-     * @param Sortie $sortie
-     */
-    private function handleEtat(Request $request, $etatSaved, $etatPublished, Sortie $sortie): void
+    #[Route('/{id}/publier', name: 'app_sortie_publier', methods: ['GET'])]
+    #[IsGranted(DroitsBoutonsVoter::PUBLISHED, 'sortie')]
+    public function publier(Sortie $sortie, Request $request, EtatRepository $etatRepository, EntityManagerInterface $em): Response
     {
-        if ($request->request->get('save') !== null && $etatSaved) {
-            $sortie->setEtat($etatSaved);
-        } elseif ($request->request->get('publish') !== null && $etatPublished) {
-            $sortie->setEtat($etatPublished);
+        // Récupérer l'état "ouverte" dans la DB
+        $etatPublished = $etatRepository->findOneBy(['libelle' => 'ouverte']);
+        $etatCreate = $etatRepository->findOneBy(['libelle' => 'créée']);
 
-        }
+        // Vérifie si la sortie est bien dans l'état créée avant de la publier
+        if ($sortie->getEtat() === $etatCreate) {
+            // La change à l'état "ouverte"
+            $sortie->setEtat($etatPublished);
+            $em->persist($sortie);
+            $em->flush();
+
+            // Ajoute un message de succès
+            $this->addFlash('success', 'La sortie a été publiée avec succès !');
+        } else {
+            // Ajoute un message d'erreur
+            $this->addFlash('error', 'la sortie ne peut pas être publiée.');
+        };
+        // Redirection
+        return $this->redirectToRoute('app_home');
+
     }
 
     #[Route('/{id}/modifier-sortie', name: 'modifier-sortie', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function update(int $id, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $em): Response
+    #[IsGranted(DroitsBoutonsVoter::EDIT, 'sortie')]
+    public function update(Sortie $sortie, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $em): Response
     {
         // Vérifiez que l'utilisateur est connecté
         if (!$this->getUser()) {
@@ -78,10 +89,10 @@ class SortieController extends AbstractController
         }
 
         // Récupération de la sortie à modifier en fonction de son id présent dans l'url.
-        $sortie = $sortieRepository->find($id);
-        if (!$sortie) {
-            throw $this->createNotFoundException('La sortie est introuvable, désolé !');
-        }
+//        $sortie = $sortieRepository->find($id);
+//        if (!$sortie) {
+//            throw $this->createNotFoundException('La sortie est introuvable, désolé !');
+//        }
 
         // Teste si l'utilisateur connecté est le même que l'utilisateur associé à la sortie
 //        if ($sortie->getParticipants() !== $this->getUser()) {
@@ -161,7 +172,8 @@ class SortieController extends AbstractController
      * */
 
     #[Route('/showSortieDetail/{id}', name: 'showSortiedetail', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function showDetail(int $id, SortieRepository $sortieRepository): Response
+    #[IsGranted(DroitsBoutonsVoter::VIEW, 'sortie')]
+    public function showDetail(int $id, Sortie $sortie, SortieRepository $sortieRepository): Response
     {
 
         $sortie = $sortieRepository->find($id);

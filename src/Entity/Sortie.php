@@ -54,10 +54,6 @@ class Sortie
     #[ORM\JoinColumn(nullable: false)]
     private ?Participant $organisateur = null;
 
-    #[ORM\Column]
-    private ?bool $published = false;
-
-    #[ORM\ManyToOne(inversedBy: 'sorties')]
     private ?Campus $campus = null;
 
     public function __construct()
@@ -66,7 +62,6 @@ class Sortie
         $this->dateHeureDebut = new \DateTime();
         $this->dateLimiteInscription = new \DateTime();
         $this->nbInscriptionMax = 0;
-        $this->published = false;
     }
 
     public function getParticipants(): Collection
@@ -202,14 +197,15 @@ class Sortie
         return $this;
     }
 
-    public function isPublished(): ?bool
+    public function getParticipant(): ?Participant
     {
-        return $this->published;
+        return $this->participant;
     }
 
-    public function setPublished(bool $published): static
+    public function setParticipant(?Participant $participant): self
+
     {
-        $this->published = $published;
+        $this->participant = $participant;
 
         return $this;
     }
