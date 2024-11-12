@@ -29,58 +29,53 @@ class VilleCrudController extends AbstractController
 
             ]
         );
-    }
-    #[Route('/admin/ville-create', name: 'app_ville_create', methods: ['GET', 'POST'])]
-    public function create(Request $request,EntityManagerInterface $em): Response
-    {
-        $ville = new Ville();
-        $villeForm = $this->createForm(AddVilleType::class, $ville);
-       $villeForm->handleRequest($request);
+    } #[Route('admin/ville-add', name: 'ville_add', methods: ['GET', 'POST'])]
+public function create(Request $request,EntityManagerInterface $em): Response
+{
 
-        if ($villeForm->isSubmitted() && $villeForm->isValid()) {
+    $name = $request->request->get('nom');
+    $postalCode = $request->request->get('codePostal');
+    $ville = new Ville();
+    $ville->setNom($name);
+    $ville->setCodePostal($postalCode);
+    $em->persist($ville);
+    $em->flush();
 
-            $em->persist($ville);
-            $em->flush();
-            return $this->redirectToRoute('app_admin');
-        }
+    return $this->redirectToRoute('app_home');
 
+}
 
-        return $this->render('admin/ville_crude/index.html.twig', [
-            'villeForm' => $villeForm->createView(),
-        ]);
-    }
-
-    /////////////////////////////
-    ///
-    #[Route('/admin/ville-modifier/{id}', name: 'app_ville_modifier', requirements:['id'=>'\d+'],methods: ['GET','POST'])]
+    #[Route('admin/ville-modifier/{id}', name: 'ville_modifier', requirements:['id'=>'\d+'],methods: ['GET','POST'])]
     public function modifierParticipant(int $id,Request $request, VilleRepository $villeRepository, EntityManagerInterface $em): Response
     {
         $ville = $villeRepository->find($id);
-        $villeForm = $this->createForm(ModifyVilleType::class, $ville);
-        $villeForm ->handleRequest($request);
-        if ($villeForm ->isSubmitted() && $villeForm ->isValid()) {
-            if(!$ville){
-                throw $this->createNotFoundException('ville not found');
-            }
+        if (!$ville) {
 
-            $em->persist($ville);
+            throw $this->createNotFoundException('La ville demandée n\'a pas été trouvée.');
+        }
+        if ($request->isMethod('POST')) {
+            $nom = $request->request->get('nom');
+            $codePostal = $request->request->get('codePostal');
+            $ville->setNom($nom);
+            $ville->setCodePostal($codePostal);
             $em->flush();
-            return $this->redirectToRoute('app_admin');}
 
-        return $this->render('admin/ville_crude/modifier.html.twig', [
-            "villeForm_detail"=>$villeForm->createView(),
-        ]);
+        }
+        return $this->redirectToRoute('app_home');
+
+
     }
-    #[Route('/admin/ville-delete/{id}', name: 'app_ville_delete', requirements:['id'=>'\d+'],methods: ['GET'])]
+    #[Route('admin/ville-suprimer/{id}', name: 'ville_suprimer', requirements:['id'=>'\d+'],methods: ['GET'])]
     public function deleteParticipant(int $id, VilleRepository $villeRepository, EntityManagerInterface $em): Response
     {
 
         $ville = $villeRepository->find($id);
         if(!$ville){
-            throw $this->createNotFoundException('Ville not found');
+            throw $this->createNotFoundException('La ville demandée n\'a pas été trouvée.');
         }
         $em->remove($ville);
         $em->flush();
-        return $this->redirectToRoute('app_admin');
+        return $this->redirectToRoute('app_home');
     }
+
 }

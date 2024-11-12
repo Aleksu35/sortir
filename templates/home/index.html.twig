@@ -52,6 +52,7 @@
                             {{ sortie.organisateur.pseudo }}
                         </a>
                     {% else %}
+
                         Non défini
                     {% endif %}
                 </td>
@@ -59,6 +60,7 @@
                     {% if sortie.organisateur == app.user %}
                         <td><a href="{{ path('modifier-sortie', { 'id': sortie.id }) }}">Modifier</a></td>
                 {% else %}
+
                         <td><a href="{{ path('showSortiedetail', { 'id': sortie.id }) }}">Afficher</a></td>
               {% endif %}
 

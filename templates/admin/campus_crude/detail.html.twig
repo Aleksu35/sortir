@@ -4,27 +4,50 @@
 
 {% block body %}
 
-            <table class="table table-bordered table-striped">
-                <thead class="thead-dark">
+    <div class="container mt-4">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Campus</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for campus in campusList %}
                 <tr>
-                    <th>Campus</th>
-                    <th>Modifier</th>
-                    <th>Suprimer</th>
-                    <th>Ajouter</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for campus in campusList %}
-                    <tr>
-                        <td>{{ campus.nom }}</td>
-                        <td><a href="{{ path('app_campus_modifier', { 'id': campus.id }) }}" class="btn btn-primary">  >>> </a></td>
-                        <td> <a href="{{ path('app_campus_delete', { 'id': campus.id }) }}" class="btn btn-danger">---</a></td>
-                        <td> <a href="{{ path('app_campus_create', { 'id': campus.id }) }}" class="btn btn-danger">+++</a></td>
-                    </tr>
+                    <td class="campus-name">{{ campus.nom }}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-primary edit-btn">Modifier</button>
+                        <a href="{{ path('campus_suprimer', { id: campus.id }) }}" class="btn btn-sm btn-danger">Supprimer</a>
+                    </td>
 
-                {% endfor %}
-                </tbody>
-            </table>
+                    <form action="{{ path('campus_modifier', { id: campus.id }) }}" method="post" class="edit-form">
+                        <td>
+                            <input type="text" name="nom" value="{{ campus.nom }}" class="form-control form-control-sm" required />
+                        </td>
+                        <td >
+                            <button type="submit" class="btn btn-sm btn-success">Sauvegarder</button>
+                            <button type="button" class="btn btn-sm btn-secondary cancel-btn">Annuler</button>
+                        </td>
+                    </form>
+                </tr>
+            {% endfor %}
+
+
+            <tr>
+                <form action="{{ path('campus_create') }}" method="post" class="form-inline">
+                    <td>
+                        <input type="text" name="nom" placeholder="Campus" class="form-control form-control-sm" required />
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-sm btn-success">Ajouter</button>
+                    </td>
+                </form>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 
 
 {% endblock %}
