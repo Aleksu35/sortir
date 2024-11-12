@@ -60,9 +60,6 @@ class Sortie
         $this->lieu = $lieu;
     }
 
-    #[ORM\Column]
-    private ?bool $published = false;
-
     #[ORM\ManyToOne(inversedBy: 'sortie')]
     private ?Campus $campus = null;
 
@@ -186,18 +183,6 @@ class Sortie
 
     {
         $this->participant = $participant;
-        return $this;
-    }
-
-    public function isPublished(): bool
-    {
-        return $this->published;
-    }
-    public function setPublished(bool $published): static
-
-    {
-        $this->published = $published;
-
         return $this;
     }
 

@@ -63,7 +63,6 @@ class SortieController extends AbstractController
         if ($sortie->getEtat() === $etatCreate) {
             // La change à l'état "ouverte"
             $sortie->setEtat($etatPublished);
-            $sortie->setPublished(true);
             $em->persist($sortie);
             $em->flush();
 
