@@ -2,10 +2,12 @@
 
 
 
-{% block body %}
+{% block aside %}
+<div class="container">
+    {{ form_start(participantForm) }}
+    {{ form_end(participantForm) }}
+</div>
 
-            {{ form_start(participantForm) }}
-            {{ form_end(participantForm) }}
 
 
 {% endblock %}

@@ -26,6 +26,7 @@ class ParticipantFixtures extends Fixture
         $participantAdmin->setTelephone("0766589450");
         $participantAdmin->setCampus($campus1);
         $participantAdmin ->setRoles(['ROLE_ADMIN']);
+        $participantAdmin ->setActif(1);
         $password=$this->userPasswordHasher->hashPassword($participantAdmin, '123456');
         $participantAdmin ->setPassword($password);
         $manager->persist($participantAdmin);
@@ -39,6 +40,7 @@ class ParticipantFixtures extends Fixture
              $participant->setEmail("user$i@test.fr");
              $participant->setTelephone("076658945$i");
              $participant->setRoles(['ROLE_USER']);
+            $participant ->setActif(1);
             $password=$this->userPasswordHasher->hashPassword( $participantAdmin, '123456');
              $participant->setPassword($password);
             $manager->persist($participant);
@@ -52,6 +54,7 @@ class ParticipantFixtures extends Fixture
         $participant->setTelephone("0766874615");
         $participant->setCampus($campus1);
         $participant->setRoles(['ROLE_USER']);
+        $participant ->setActif(0);
         $password=$this->userPasswordHasher->hashPassword( $participantAdmin, '123456');
         $participant->setPassword($password);
         $manager->persist($participant);
@@ -64,6 +67,7 @@ class ParticipantFixtures extends Fixture
         $participant->setTelephone("0645123578");
         $participant->setCampus($campus1);
         $participant->setRoles(['ROLE_USER']);
+        $participant ->setActif(1);
         $password=$this->userPasswordHasher->hashPassword( $participantAdmin, '123456');
         $participant->setPassword($password);
         $manager->persist($participant);
@@ -76,6 +80,7 @@ class ParticipantFixtures extends Fixture
         $participant->setTelephone("0681197154");
         $participant->setCampus($campus1);
         $participant->setRoles(['ROLE_USER']);
+        $participant ->setActif(1);
         $password=$this->userPasswordHasher->hashPassword( $participantAdmin, '123456');
         $participant->setPassword($password);
         $manager->persist($participant);
