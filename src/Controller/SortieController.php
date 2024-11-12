@@ -7,16 +7,19 @@ use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
+use App\Security\Voter\DroitsBoutonsVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class SortieController extends AbstractController
 {
 
     #[Route('/create', name: 'app_sortie_create', methods: ['GET', 'POST'])]
+    #[IsGranted(DroitsBoutonsVoter::PUBLISHED, 'sortie')]
     public function create(Request $request, EntityManagerInterface $em, EtatRepository $etatRepository): Response
     {
         $sortie = new Sortie();
@@ -50,7 +53,8 @@ class SortieController extends AbstractController
     }
 
     #[Route('/{id}/modifier-sortie', name: 'modifier-sortie', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function update(int $id, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $em): Response
+    #[IsGranted(DroitsBoutonsVoter::EDIT, 'sortie')]
+    public function update(Sortie $sortie, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $em): Response
     {
         // Vérifiez que l'utilisateur est connecté
         if (!$this->getUser()) {
@@ -58,10 +62,10 @@ class SortieController extends AbstractController
         }
 
         // Récupération de la sortie à modifier en fonction de son id présent dans l'url.
-        $sortie = $sortieRepository->find($id);
-        if (!$sortie) {
-            throw $this->createNotFoundException('La sortie est introuvable, désolé !');
-        }
+//        $sortie = $sortieRepository->find($id);
+//        if (!$sortie) {
+//            throw $this->createNotFoundException('La sortie est introuvable, désolé !');
+//        }
 
         // Teste si l'utilisateur connecté est le même que l'utilisateur associé à la sortie
         if ($sortie->getParticipant() !== $this->getUser()) {
@@ -139,7 +143,8 @@ class SortieController extends AbstractController
      * */
 
     #[Route('/showSortieDetail/{id}', name: 'showSortiedetail', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function showDetail(int $id, SortieRepository $sortieRepository): Response
+    #[IsGranted(DroitsBoutonsVoter::VIEW, 'sortie')]
+    public function showDetail(int $id, Sortie $sortie, SortieRepository $sortieRepository): Response
     {
 
         $sortie = $sortieRepository->find($id);
