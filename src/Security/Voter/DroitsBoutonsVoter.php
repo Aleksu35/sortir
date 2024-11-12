@@ -53,7 +53,7 @@ final class DroitsBoutonsVoter extends Voter
 
     private function canPublish(Sortie $sortie, UserInterface $user): bool
     {
-        if ($sortie->getParticipant() === $user && $sortie->isPublished(false)) {
+        if ($sortie->getParticipant() === $user && $sortie->isPublished()) {
             return true;
         }
         return false;
@@ -61,7 +61,7 @@ final class DroitsBoutonsVoter extends Voter
 
     private function canView(Sortie $sortie, UserInterface $user): bool
     {
-        if ($sortie->isPublished() === false) {
+        if (!$sortie->isPublished()) {
             return true;
         }
         return false;

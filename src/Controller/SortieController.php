@@ -19,7 +19,6 @@ class SortieController extends AbstractController
 {
 
     #[Route('/create', name: 'app_sortie_create', methods: ['GET', 'POST'])]
-    #[IsGranted(DroitsBoutonsVoter::PUBLISHED, 'sortie')]
     public function create(Request $request, EntityManagerInterface $em, EtatRepository $etatRepository): Response
     {
         $sortie = new Sortie();
@@ -50,6 +49,32 @@ class SortieController extends AbstractController
         return $this->render('sortie/create.html.twig', [
             'sortieForm' => $sortieForm->createView(),
         ]);
+    }
+
+    #[Route('/{id}/publier', name: 'app_sortie_publier', methods: ['GET'])]
+    #[IsGranted(DroitsBoutonsVoter::PUBLISHED, 'sortie')]
+    public function publier(Sortie $sortie, Request $request, EtatRepository $etatRepository, EntityManagerInterface $em): Response
+    {
+        // Récupérer l'état "ouverte" dans la DB
+        $etatPublished = $etatRepository->findOneBy(['libelle' => 'ouverte']);
+        $etatCreate = $etatRepository->findOneBy(['libelle' => 'créée']);
+
+        // Vérifie si la sortie est bien dans l'état créée avant de la publier
+        if ($sortie->getEtat() === $etatCreate) {
+            // La change à l'état "ouverte"
+            $sortie->setEtat($etatPublished);
+            $sortie->setPublished(true);
+            $em->persist($sortie);
+            $em->flush();
+
+            // Ajoute un message de succès
+            $this->addFlash('success', 'La sortie a été publiée avec succès !');
+        } else {
+            // Ajoute un message d'erreur
+            $this->addFlash('error', 'la sortie ne peut pas être publiée.');
+        };
+        // Redirection
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route('/{id}/modifier-sortie', name: 'modifier-sortie', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]

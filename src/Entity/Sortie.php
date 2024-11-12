@@ -73,7 +73,6 @@ class Sortie
         $this->dateHeureDebut = new \DateTime();
         $this->dateLimiteInscription = new \DateTime();
         $this->nbInscriptionMax = 0;
-        $this->published = false;
     }
 
 
@@ -190,7 +189,7 @@ class Sortie
         return $this;
     }
 
-    public function isPublished(): ?bool
+    public function isPublished(): bool
     {
         return $this->published;
     }

@@ -53,7 +53,7 @@
                 {% endif %}
 
                 {% if is_granted('POST_PUBLISHED', sortie) %}
-                    <a href="{{ path('app_home', {'id': sortie.id}) }}">Publier</a>
+                    <a href="{{ path('app_sortie_publier', {'id': sortie.id}) }}">Publier</a>
                 {% endif %}
 
                  {% if is_granted('POST_VIEW', sortie) %}
