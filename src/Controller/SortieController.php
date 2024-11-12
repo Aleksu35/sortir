@@ -49,8 +49,6 @@ class SortieController extends AbstractController
         ]);
     }
 
-
-
     #[Route('/{id}/modifier-sortie', name: 'modifier-sortie', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function update(int $id, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $em): Response
     {
