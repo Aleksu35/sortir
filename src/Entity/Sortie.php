@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\SortieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Participant;
-
 
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
 class Sortie
@@ -21,6 +22,9 @@ class Sortie
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateHeureDebut = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $dateUpdated = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $duree = null;
@@ -38,17 +42,59 @@ class Sortie
     #[ORM\JoinColumn(nullable: false)]
     private ?Etat $etat = null;
 
-    // Dans votre entité Sortie
-    #[ORM\ManyToOne(targetEntity: Participant::class)]
-//    #[ORM\JoinColumn(name: "participant_id", referencedColumnName: "id", nullable: false)]
-    private ?Participant $participant = null;
-
-    // il faut faire un make entity sortie et rajouter une relation vers participant de type ManyToMany (dans terminal
-    // de commande !! Faire les relations dans le terminal tout va se faire tout seul ça va être très cool
-
     #[ORM\ManyToOne(targetEntity: Lieu::class, inversedBy: "sorties")]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Lieu $lieu= null;
+    private ?Lieu $lieu = null;
+
+    // Relation ManyToMany avec Participant
+    #[ORM\ManyToMany(targetEntity: Participant::class, mappedBy: "sorties")]
+    private Collection $participants;
+
+    #[ORM\ManyToOne(targetEntity: Participant::class, cascade: ["persist"])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Participant $organisateur = null;
+
+    private ?Campus $campus = null;
+
+    public function __construct()
+    {
+        $this->participants = new ArrayCollection();
+        $this->dateHeureDebut = new \DateTime();
+        $this->dateLimiteInscription = new \DateTime();
+        $this->nbInscriptionMax = 0;
+    }
+
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(Participant $participant): self
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants[] = $participant;
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participant $participant): self
+    {
+        $this->participants->removeElement($participant);
+
+        return $this;
+    }
+
+    public function getOrganisateur(): ?Participant
+    {
+        return $this->organisateur;
+    }
+
+    public function setOrganisateur(?Participant $organisateur): self
+    {
+        $this->organisateur = $organisateur;
+        return $this;
+    }
 
     public function getLieu(): ?Lieu
     {
@@ -59,19 +105,6 @@ class Sortie
     {
         $this->lieu = $lieu;
     }
-
-    #[ORM\ManyToOne(inversedBy: 'sortie')]
-    private ?Campus $campus = null;
-
-
-    public function __construct()
-
-    {
-        $this->dateHeureDebut = new \DateTime();
-        $this->dateLimiteInscription = new \DateTime();
-        $this->nbInscriptionMax = 0;
-    }
-
 
     public function getId(): ?int
     {
@@ -126,29 +159,19 @@ class Sortie
         return $this;
     }
 
-    public function getDateCreated(): ?\DateTimeImmutable
-    {
-        return $this->dateCreated;
-    }
-
-    public function setDateCreated(\DateTimeImmutable $dateCreated): static
-    {
-        $this->dateCreated = $dateCreated;
-
-        return $this;
-    }
-
     public function getDateUpdated(): ?\DateTimeImmutable
     {
         return $this->dateUpdated;
     }
 
-    public function setDateUpdated(?\DateTimeImmutable $dateUpdated): static
+    // Setter pour `dateUpdated`
+    public function setDateUpdated(\DateTimeImmutable $dateUpdated): self
     {
         $this->dateUpdated = $dateUpdated;
 
         return $this;
     }
+
 
     public function getNbInscriptionMax(): ?int
     {
@@ -183,6 +206,7 @@ class Sortie
 
     {
         $this->participant = $participant;
+
         return $this;
     }
 
@@ -207,5 +231,4 @@ class Sortie
 
         return $this;
     }
-
 }

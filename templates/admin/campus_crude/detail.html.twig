@@ -14,28 +14,26 @@
             </thead>
             <tbody>
             {% for campus in campusList %}
-                <tr ">
-
+                <tr>
                     <td class="campus-name">{{ campus.nom }}</td>
                     <td>
                         <button type="button" class="btn btn-sm btn-primary edit-btn">Modifier</button>
                         <a href="{{ path('campus_suprimer', { id: campus.id }) }}" class="btn btn-sm btn-danger">Supprimer</a>
                     </td>
 
-
                     <form action="{{ path('campus_modifier', { id: campus.id }) }}" method="post" class="edit-form">
                         <td>
                             <input type="text" name="nom" value="{{ campus.nom }}" class="form-control form-control-sm" required />
                         </td>
-                        <td>
+                        <td >
                             <button type="submit" class="btn btn-sm btn-success">Sauvegarder</button>
-                            <button type="button" class="btn btn-sm btn-secondary cancel-btn" >Annuler</button>
+                            <button type="button" class="btn btn-sm btn-secondary cancel-btn">Annuler</button>
                         </td>
                     </form>
                 </tr>
             {% endfor %}
 
-            <!-- New row for adding a campus -->
+
             <tr>
                 <form action="{{ path('campus_create') }}" method="post" class="form-inline">
                     <td>

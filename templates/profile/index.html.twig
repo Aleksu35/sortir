@@ -13,7 +13,13 @@
                      class="img-fluid rounded-circle mb-3"
                      alt="image" style="width: 120px; height: 120px; border: 5px solid white;">
                 <h3>{{ participant.pseudo}}</h3>
-                <p class="text-muted">{{ participant.campus.nom }}</p>
+                <p class="text-muted">
+                    {% if participant.campus is not null %}
+                        {{ participant.campus.nom }}
+                    {% else %}
+                        Campus non défini
+                    {% endif %}
+                </p>
 
             </div>
 

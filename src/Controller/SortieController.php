@@ -22,34 +22,36 @@ class SortieController extends AbstractController
     public function create(Request $request, EntityManagerInterface $em, EtatRepository $etatRepository): Response
     {
         $sortie = new Sortie();
-        $sortie->setParticipant($this->getUser());
+        $sortie->setOrganisateur($this->getUser()); // Définit l'utilisateur courant comme organisateur
+        $em->clear();
 
         // Accéder aux états spécifiques depuis la base de données
-        $etatSaved = $etatRepository->findOneBy(['libelle' => 'créee']);
+        $etatSaved = $etatRepository->findOneBy(['libelle' => 'créée']);
         $etatPublished = $etatRepository->findOneBy(['libelle' => 'ouverte']);
 
+        // Créer et gérer le formulaire
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
-            // Vérifier quel bouton a été pressé
-            if ($request->request->get('save') !== null && $etatSaved) {
-                $sortie->setEtat($etatSaved);
-            } elseif ($request->request->get('publish') !== null && $etatPublished) {
-                $sortie->setEtat($etatPublished);
-            }
+            // Déterminer l'état de la sortie en fonction du bouton cliqué
+            $this->handleEtat($request, $etatSaved, $etatPublished, $sortie);
 
+            // Sauvegarder la sortie
             $em->persist($sortie);
             $em->flush();
 
+            // Message de succès et redirection
             $this->addFlash('success', "Sortie ajoutée avec succès");
             return $this->redirectToRoute('app_home');
         }
 
+        // Retourner la vue avec le formulaire
         return $this->render('sortie/create.html.twig', [
             'sortieForm' => $sortieForm->createView(),
         ]);
     }
+
 
     #[Route('/{id}/publier', name: 'app_sortie_publier', methods: ['GET'])]
     #[IsGranted(DroitsBoutonsVoter::PUBLISHED, 'sortie')]
@@ -74,6 +76,7 @@ class SortieController extends AbstractController
         };
         // Redirection
         return $this->redirectToRoute('app_home');
+
     }
 
     #[Route('/{id}/modifier-sortie', name: 'modifier-sortie', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
@@ -92,9 +95,9 @@ class SortieController extends AbstractController
 //        }
 
         // Teste si l'utilisateur connecté est le même que l'utilisateur associé à la sortie
-        if ($sortie->getParticipant() !== $this->getUser()) {
-            throw $this->createAccessDeniedException();
-        }
+//        if ($sortie->getParticipants() !== $this->getUser()) {
+//            throw $this->createAccessDeniedException();
+//        }
 
         // Création et gestion du formulaire associé à notre objet sortie.
         $sortieForm = $this->createForm(SortieType::class, $sortie);
@@ -125,10 +128,12 @@ class SortieController extends AbstractController
     #[Route('/mes-sorties', name: 'mes-sorties', methods: ['GET'])]
     public function mesSorties(SortieRepository $sortieRepository): Response
     {
-        $sorties = $sortieRepository->findBy(['participant' => $this->getUser()]);
+        // Récupérer les sorties dont l'utilisateur actuel est l'organisateur
+        $sorties = $sortieRepository->findBy(['organisateur' => $this->getUser()]);
 
         return $this->render('sortie/mes-sorties.html.twig', [
             'sorties' => $sorties,
+
         ]);
     }
 
