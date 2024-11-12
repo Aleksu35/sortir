@@ -46,3 +46,32 @@ function removeStars(link) {
     stars.forEach(star => star.remove());
 }
 
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const editButtons = document.querySelectorAll(".edit-btn");
+        const cancelButtons = document.querySelectorAll(".cancel-btn");
+
+        editButtons.forEach(
+            (button, index) => {
+            button.addEventListener(
+                "click", function () {
+                const form = document.querySelector(".edit-form");
+                    form.style.backgroundColor = "black";
+
+
+                });
+        });
+
+
+        cancelButtons.forEach((button) => {
+            button.addEventListener("click", function (e) {
+             e.preventDefault();
+                const form =  document.querySelector(".edit-form");
+
+                form.style.display = "block";
+
+            });
+        });
+
+    });
