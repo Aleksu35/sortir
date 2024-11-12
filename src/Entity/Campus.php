@@ -22,7 +22,7 @@ class Campus
      * @var Collection<int, Participant>
      */
     #[ORM\OneToMany(targetEntity: Participant::class, mappedBy: 'campus')]
-    private Collection $participant;
+    private Collection $participants;
 
     /**
      * @var Collection<int, Sortie>
@@ -32,7 +32,7 @@ class Campus
 
     public function __construct()
     {
-        $this->participant = new ArrayCollection();
+        $this->participants = new ArrayCollection();
         $this->sortie = new ArrayCollection();
     }
 
@@ -56,15 +56,15 @@ class Campus
     /**
      * @return Collection<int, Participant>
      */
-    public function getParticipant(): Collection
+    public function getParticipants(): Collection
     {
-        return $this->participant;
+        return $this->participants;
     }
 
     public function addParticipant(Participant $participant): static
     {
-        if (!$this->participant->contains($participant)) {
-            $this->participant->add($participant);
+        if (!$this->participants->contains($participant)) {
+            $this->participants->add($participant);
             $participant->setCampus($this);
         }
 
@@ -73,8 +73,7 @@ class Campus
 
     public function removeParticipant(Participant $participant): static
     {
-        if ($this->participant->removeElement($participant)) {
-            // set the owning side to null (unless already changed)
+        if ($this->participants->removeElement($participant)) {
             if ($participant->getCampus() === $this) {
                 $participant->setCampus(null);
             }
@@ -104,7 +103,6 @@ class Campus
     public function removeSortie(Sortie $sortie): static
     {
         if ($this->sortie->removeElement($sortie)) {
-            // set the owning side to null (unless already changed)
             if ($sortie->getCampus() === $this) {
                 $sortie->setCampus(null);
             }
