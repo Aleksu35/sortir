@@ -147,7 +147,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/delete', name: 'delete', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'delete', requirements: ['id' => '\d+'], methods: ['POST', 'GET'])]
     public function delete(int $id, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $em): Response
     {
         $sortie = $sortieRepository->find($id);
@@ -156,7 +156,7 @@ class SortieController extends AbstractController
         }
 
         // Vérifier que l'utilisateur connecté est le même que celui de la sortie ou un administrateur
-        if (!($sortie->getParticipant() === $this->getUser() || $this->isGranted('ROLE_ADMIN'))) {
+        if (!($sortie->getOrganisateur() === $this->getUser() || $this->isGranted('ROLE_ADMIN'))) {
             throw $this->createAccessDeniedException();
         }
 

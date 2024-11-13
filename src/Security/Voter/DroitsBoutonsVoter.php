@@ -45,6 +45,7 @@ final class DroitsBoutonsVoter extends Voter
             self::EDIT => $this->canEdit($sortie, $user),
             self::PUBLISHED => $this->canPublish($sortie, $user),
             self::VIEW => $this->canView($sortie, $user),
+            self::DELETE => $this->canDelete($sortie, $user),
             default => throw new \LogicException('Vous ne pouvez pas faire cette action.'),
         };
     }
@@ -80,5 +81,13 @@ final class DroitsBoutonsVoter extends Voter
         $etat = $sortie->getEtat();
         // On retourne le libellé de l'état
         return $etat ? $etat->getLibelle() : '';
+    }
+
+    private function canDelete(Sortie $sortie, UserInterface $user): bool
+    {
+        if($sortie->getOrganisateur() === $user && $this->getEtatLibelle($sortie) === 'Ouverte'){
+            return true;
+        }
+        return false;
     }
 }

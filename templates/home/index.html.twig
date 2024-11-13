@@ -60,6 +60,10 @@
                      <a href="{{ path('showSortiedetail', {'id': sortie.id}) }}">Afficher</a>
                  {% endif %}
 
+                  {% if is_granted('POST_DELETE', sortie) %}
+                    <a href="{{ path('delete', {'id': sortie.id}) }}">Supprimer</a>
+                  {% endif %}
+
                 </td>
         {% else %}
             <tr>
