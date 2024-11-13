@@ -23,7 +23,7 @@ class SortieController extends AbstractController
     {
         $sortie = new Sortie();
         $sortie->setOrganisateur($this->getUser()); // Définit l'utilisateur courant comme organisateur
-        $em->clear();
+//        $em->clear();
 
         // Accéder aux états spécifiques depuis la base de données
         $etatSaved = $etatRepository->findOneBy(['libelle' => 'créée']);
@@ -37,6 +37,7 @@ class SortieController extends AbstractController
             // Déterminer l'état de la sortie en fonction du bouton cliqué
             $this->handleEtat($request, $etatSaved, $etatPublished, $sortie);
 
+            dump($sortie);
             // Sauvegarder la sortie
             $em->persist($sortie);
             $em->flush();
@@ -50,6 +51,15 @@ class SortieController extends AbstractController
         return $this->render('sortie/create.html.twig', [
             'sortieForm' => $sortieForm->createView(),
         ]);
+    }
+
+    private function handleEtat(Request $request, $etatSaved, $etatPublished, Sortie $sortie): void
+    {
+        if ($request->request->get('save') !== null && $etatSaved) {
+            $sortie->setEtat($etatSaved);
+        } elseif ($request->request->get('publish') !== null && $etatPublished) {
+            $sortie->setEtat($etatPublished);
+        }
     }
 
 
