@@ -40,11 +40,12 @@ security:
     access_control:
 
         - { path: ^/login }
+        - { path: ^/reset_password }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/, roles: ROLE_USER }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/modifier-sortie, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/.*, roles: ROLE_USER }
+
 
 
 when@test:
