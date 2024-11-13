@@ -52,7 +52,7 @@ final class DroitsBoutonsVoter extends Voter
     private function canEdit(Sortie $sortie, UserInterface $user): bool
     {
         // Ici, on va vérifier si l'état de la sortie n'est pas encore publiée !
-        if ($sortie->getParticipant() === $user && $this->getEtatLibelle($sortie) !== 'Ouverte') {
+        if ($sortie->getOrganisateur() === $user && $this->getEtatLibelle($sortie) !== 'Ouverte') {
             return true;
         }
         return false;
@@ -61,7 +61,7 @@ final class DroitsBoutonsVoter extends Voter
     private function canPublish(Sortie $sortie, UserInterface $user): bool
     {
         // Vérifier si l'utilisateur est le participant et que l'état est créé(=enregistré)
-        if ($sortie->getParticipant() === $user && $this->getEtatLibelle($sortie) === 'Créée') {
+        if ($sortie->getOrganisateur() === $user && $this->getEtatLibelle($sortie) === 'Créée') {
             return true;
         }
         return false;
