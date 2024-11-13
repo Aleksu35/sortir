@@ -104,5 +104,7 @@ body {
 .star span::after {
     transform: translate(-50%, -50%) rotate(360deg);
 }
-
+.active{
+    color: #0a3622;
+}
 
