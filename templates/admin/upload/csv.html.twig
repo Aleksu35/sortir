@@ -1,0 +1,12 @@
+{% extends 'admin/dashboard_base.html.twig' %}
+
+
+
+{% block aside %}
+<div>
+    {{ form_start(formUpload) }}
+    {{ form_row(formUpload.csv_file) }}
+    {{ form_row(formUpload.execute) }}
+    {{ form_end(formUpload) }}
+</div>
+{% endblock %}

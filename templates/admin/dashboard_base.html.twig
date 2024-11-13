@@ -1,27 +1,28 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-<section class="container-fluid d-flex justify-content-center w-75 h-75">
+<section class="container-fluid w-75">
 
     <button class="btn btn-primary d-md-none mb-3" id="sidebarToggle">  >>> </button>
 
     <div class="row">
 
-        <aside class="col-md-3 col-lg-2 sidebar bg-light p-3" style="margin-top: 87px; height: 75%" id="sidebarMenu">
+        <aside class="col-md-4 col-lg-2 sidebar bg-light p-3" style="margin-top: 87px; height: 75%" id="sidebarMenu">
             <h3 class="text-center mt-4">ESPACE ADMIN</h3>
             <ul class="list-unstyled">
-                <li><a href="{{ path('app_admin') }}" class="d-block py-2">Dashboard</a></li>
-                <li><a href="{{ path('app_participant_create') }}" class="d-block py-2 active">Ajouter Participant</a></li>
-                <li><a href="{{ path('app_campus') }}" class="d-block py-2 active">Campus</a></li>
-                <li><a href="{{ path('app_ville') }}" class="d-block py-2">Ville</a></li>
+                <li><a href="{{ path('app_admin') }}" class="d-block py-2 text-decoration-none active">Dashboard</a></li>
+                <li><a href="{{ path('app_participant_create') }}" class="d-block py-2  text-decoration-none">Ajouter Participant</a></li>
+                <li><a href="{{ path('app_campus') }}" class="d-block py-2 active text-decoration-none">Campus</a></li>
+                <li><a href="{{ path('app_ville') }}" class="d-block py-2 text-decoration-none">Ville</a></li>
+                <li><a href="{{ path('app_upload_csv') }}" class="d-block py-2 text-decoration-none">Importer CSV</a></li>
             </ul>
         </aside>
 
 
-        <div class="col-md-9 col-lg-10 mt-4 h-50">
+        <main class="col-md-8 col-lg-10 mt-5 h-50">
             {% block aside %}
 
             {% endblock %}
-        </div>
+        </main>
     </div>
 </section>
 
