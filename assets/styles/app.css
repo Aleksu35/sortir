@@ -107,4 +107,9 @@ body {
 .active{
     color: #0a3622;
 }
+.edit-form-row{
+    display: none;
+
+
+}
 

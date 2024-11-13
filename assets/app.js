@@ -46,32 +46,26 @@ function removeStars(link) {
     stars.forEach(star => star.remove());
 }
 
+/*
+document.addEventListener("DOMContentLoaded", function() {
 
-    document.addEventListener("DOMContentLoaded", function () {
+    const editButtons = document.querySelectorAll(".edit-btn");
+    const formRows = document.querySelectorAll(".edit-form-row");
 
-        const editButtons = document.querySelectorAll(".edit-btn");
-        const cancelButtons = document.querySelectorAll(".cancel-btn");
+    editButtons.forEach((button, index) => {
+        button.addEventListener("click", function() {
 
-        editButtons.forEach(
-            (button, index) => {
-            button.addEventListener(
-                "click", function () {
-                const form = document.querySelector(".edit-form");
-                    form.style.backgroundColor = "black";
+            formRows.forEach(row => row.style.display = "none");
 
-
-                });
+            formRows[index].style.display = "block";
         });
-
-
-        cancelButtons.forEach((button) => {
-            button.addEventListener("click", function (e) {
-             e.preventDefault();
-                const form =  document.querySelector(".edit-form");
-
-                form.style.display = "block";
-
-            });
-        });
-
     });
+
+
+    const cancelButtons = document.querySelectorAll(".cancel-btn");
+    cancelButtons.forEach((button, index) => {
+        button.addEventListener("click", function() {
+            formRows[index].style.display = "none";
+        });
+    });
+});*/

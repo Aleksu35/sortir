@@ -39,7 +39,7 @@ class CampusCrudController extends AbstractController
         $em->persist($campus);
         $em->flush();
 
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_campus');
 
     }
 
@@ -57,7 +57,7 @@ class CampusCrudController extends AbstractController
             $em->flush();
 
         }
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_campus');
 
 
     }
@@ -71,6 +71,6 @@ class CampusCrudController extends AbstractController
         }
         $em->remove($campus);
         $em->flush();
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_campus');
     }
 }

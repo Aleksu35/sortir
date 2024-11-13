@@ -41,7 +41,7 @@ public function create(Request $request,EntityManagerInterface $em): Response
     $em->persist($ville);
     $em->flush();
 
-    return $this->redirectToRoute('app_home');
+    return $this->redirectToRoute('app_ville');
 
 }
 
@@ -61,7 +61,7 @@ public function create(Request $request,EntityManagerInterface $em): Response
             $em->flush();
 
         }
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_ville');
 
 
     }
@@ -75,7 +75,7 @@ public function create(Request $request,EntityManagerInterface $em): Response
         }
         $em->remove($ville);
         $em->flush();
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_ville');
     }
 
 }
