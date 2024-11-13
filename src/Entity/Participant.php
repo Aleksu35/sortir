@@ -21,15 +21,9 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
-     */
     #[ORM\Column]
     private array $roles = ["ROLE_USER"];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column(nullable: true)]
     private ?string $password = null;
 
@@ -51,10 +45,12 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?string $filename = null;
 
-    #[ORM\OneToMany(targetEntity: Sortie::class, mappedBy: 'participant')]
+    // Relation ManyToMany avec Sortie
+    #[ORM\ManyToMany(targetEntity: Sortie::class, inversedBy: "participants")]
     private Collection $sorties;
 
-    #[ORM\ManyToOne(inversedBy: 'participant')]
+    #[ORM\ManyToOne(targetEntity: Campus::class, inversedBy: 'participants')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Campus $campus = null;
 
     public function __construct()
@@ -79,33 +75,17 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string)$this->email;
     }
 
-    /**
-     * @return list<string>
-     * @see UserInterface
-     *
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-       // $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
@@ -123,9 +103,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         $this->filename = $filename;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -138,13 +115,8 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
     }
 
     public function getPseudo(): ?string
@@ -191,68 +163,20 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTelephone(string $telephone): static
     {
         $this->telephone = $telephone;
-
-        return $this;
+        return $this; //
     }
 
-    public function isActif(): ?bool
+    public function getCampus(): ?Campus
     {
-        return $this->actif;
+        return $this->campus;
     }
-
-    public function setActif(?bool $actif): static
-    {
-        $this->actif = $actif;
-
-        return $this;
-    }
-
-    public function getSorties(): Collection
-
-    {
-        return $this->sorties;
-    }
-
-    public function addSortie(Sortie $sortie): static
-
-    {
-        if (!$this->sorties->contains($sortie)) {
-
-            $this->sorties->add($sortie);
-            $sortie->setParticipant($this);
-        }
-
-        return $this;
-
-    }
-
-    public function removeSortie(Sortie $sortie): static
-    {
-        if ($this->sorties->removeElement($sortie)) {
-            if ($sortie->getParticipant() === $this) {
-                $sortie->setParticipant(null);
-
-            }
-    }
-  return $this;
-
-        }
-
-
-public function getCampus(): ?Campus
-{
-    return $this->campus;
-}
-
 
     public function setCampus(?Campus $campus): static
     {
         $this->campus = $campus;
+
         return $this;
-
-
     }
 
-
-
 }
+

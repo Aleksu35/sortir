@@ -46,13 +46,21 @@
                 <td>{{ sortie.etat }}</td>
                 <td><p>Inscrit</p></td>
                 <td><a href="{{ path('app_profile_showdetail', { 'id': sortie.participant.id }) }}">{{ sortie.participant.pseudo }}</a></td>
-                {% if sortie.participant == app.user %}   {# ACCESS SEILMENT OUR CREATEUR SORTIE--Canelle c'est fait, haaaaaaaah #}
-                <td><a href="{{ path('modifier-sortie', { 'id': sortie.id }) }}">Modifier</a></td>
-                    {% else %}
-                        <td><a href="{{ path('showSortiedetail', { 'id': sortie.id }) }}">Afficher</a></td>
-              {% endif %}
+                <td>
+                {% if is_granted('POST_EDIT', sortie) %}
+                    <a href="{{ path('modifier-sortie', {'id': sortie.id}) }}">Modifier</a>
+                {% endif %}
 
 
+                {% if is_granted('POST_PUBLISHED', sortie) %}
+                    <a href="{{ path('app_sortie_publier', {'id': sortie.id}) }}">Publier</a>
+                {% endif %}
+
+                 {% if is_granted('POST_VIEW', sortie) %}
+                     <a href="{{ path('showSortiedetail', {'id': sortie.id}) }}">Afficher</a>
+                 {% endif %}
+
+                </td>
         {% else %}
             <tr>
                 <td colspan="8" class="text-center">Aucune sortie trouvée</td>
