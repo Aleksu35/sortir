@@ -23,7 +23,7 @@ class ParticipantFixtures extends Fixture
         $participantAdmin->setPseudo('admintest');
         $participantAdmin->setNom('admin');
         $participantAdmin->setPrenom('admin');
-        $participantAdmin->setEmail('admin@test.fr');
+        $participantAdmin->setEmail('admintest@fr.com');
         $participantAdmin->setTelephone("0766589450");
         $participantAdmin->setCampus($campus1);
         $participantAdmin ->setRoles(['ROLE_ADMIN']);
