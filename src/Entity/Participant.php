@@ -45,6 +45,8 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?string $filename = null;
 
+
+
     // Relation ManyToMany avec Sortie
     #[ORM\ManyToMany(targetEntity: Sortie::class, inversedBy: "participants")]
     private Collection $sorties;
@@ -85,7 +87,15 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         $roles = $this->roles;
         return array_unique($roles);
     }
+    public function isActif(): ?bool
+    {
+        return $this->actif;
+    }
 
+    public function setActif(?bool $actif): void
+    {
+        $this->actif = $actif;
+    }
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
