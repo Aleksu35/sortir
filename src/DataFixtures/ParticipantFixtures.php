@@ -91,6 +91,10 @@ class ParticipantFixtures extends Fixture
         $participant->setPassword($password);
         $manager->persist($participant);
 
+        $this->addReference('Prince-Ingénieur', $participant);
+        $this->addReference('Aleksu', $participant);
+        $this->addReference('KNNLL', $participant);
+
         $manager->flush();
     }
 }

@@ -17,7 +17,12 @@ class EtatFixtures extends Fixture
             $etat = new Etat();
             $etat ->setLibelle($list);
             $manager->persist($etat);
+
+            $this->addReference($list, $etat );
         }
+
+
+      //  $this->addReference('Créée', $etat );
 
         $manager->flush();
     }

@@ -35,6 +35,9 @@ class LieuFixture extends Fixture implements DependentFixtureInterface
         $lieu -> setVille($villes[3]);
         $manager->persist($lieu);
 
+        $this->addReference('Parc du Thabor',$lieu);
+        $this->addReference('Bar Beltane', $lieu);
+
         $manager->flush();
     }
 
