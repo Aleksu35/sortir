@@ -14,8 +14,8 @@
                     <li class="mb-4"><strong>Date et heure de la sortie:</strong> {{ sortie_detail.dateHeureDebut|date('Y-m-d H:i') }}</li>
                     <li class="mb-4"><strong>Date limite d'inscription:</strong> {{ sortie_detail.dateLimiteInscription|date('Y-m-d H:i') }}</li>
                     <li class="mb-4 "><strong>Nombre de places:</strong> {{ sortie_detail.nbInscriptionMax }}</li>
-                    <li class="mb-4 "><strong>Campus:</strong> {{ sortie_detail.duree }}</li>
-                    <li class="mb-4 "><strong>Campus:</strong> {{ sortie_detail.infosSortie }}</li>
+                    <li class="mb-4 "><strong>Durée:</strong> {{ sortie_detail.duree }}</li>
+                    <li class="mb-4 "><strong>Description:</strong> {{ sortie_detail.infosSortie }}</li>
                 </ul>
 
             </div>
@@ -24,7 +24,7 @@
             <div class="col-md-5 bg-light p-4 shadow-sm rounded">
 
                 <ul class="list-unstyled">
-                    <li class="mb-4 "><strong>Campus:</strong> {{ sortie_detail.campus.nom }}</li>
+{#                    <li class="mb-4 "><strong>Campus:</strong> {{ sortie_detail.campus.nom }}</li>#}
                     <li class="mb-4 "><strong>Lieu:</strong> {{ sortie_detail.lieu.nom }}</li>
                     <li class="mb-4 "><strong>Rue:</strong> {{ sortie_detail.lieu.rue }}</li>
                    {# <li class="mb-4 "><strong>Code postal:</strong> {{ sortie_detail.ville.codePostal }}</li>

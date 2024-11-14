@@ -17,13 +17,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class SortieController extends AbstractController
 {
-
     #[Route('/create', name: 'app_sortie_create', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $em, EtatRepository $etatRepository): Response
     {
         $sortie = new Sortie();
         $sortie->setOrganisateur($this->getUser()); // Définit l'utilisateur courant comme organisateur
-//        $em->clear();
 
         // Accéder aux états spécifiques depuis la base de données
         $etatSaved = $etatRepository->findOneBy(['libelle' => 'créée']);
@@ -97,17 +95,6 @@ class SortieController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
-
-        // Récupération de la sortie à modifier en fonction de son id présent dans l'url.
-//        $sortie = $sortieRepository->find($id);
-//        if (!$sortie) {
-//            throw $this->createNotFoundException('La sortie est introuvable, désolé !');
-//        }
-
-        // Teste si l'utilisateur connecté est le même que l'utilisateur associé à la sortie
-//        if ($sortie->getParticipants() !== $this->getUser()) {
-//            throw $this->createAccessDeniedException();
-//        }
 
         // Création et gestion du formulaire associé à notre objet sortie.
         $sortieForm = $this->createForm(SortieType::class, $sortie);
